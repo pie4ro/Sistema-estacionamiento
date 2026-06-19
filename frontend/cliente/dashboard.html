@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ParkAccess | Panel cliente</title>
+
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <main class="dashboard-layout">
+
+    <section class="dashboard-sidebar">
+      <div class="brand">
+        <div class="brand-icon">P</div>
+        <span>ParkAccess</span>
+      </div>
+
+      <div class="sidebar-content">
+        <p class="tag">Panel del cliente</p>
+
+        <h1>Bienvenido al sistema de estacionamiento</h1>
+
+        <p class="description">
+          Desde este panel puedes revisar tu vehículo registrado, estado de acceso,
+          disponibilidad de espacios y tu último ingreso.
+        </p>
+
+        <div class="client-card">
+          <div class="client-avatar">👤</div>
+          <div>
+            <strong>Cliente activo</strong>
+            <span>Cuenta verificada</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dashboard-main">
+
+      <div class="dashboard-top">
+        <div>
+          <h2>Bienvenido , <span id="clientName">Cliente</span></h2>
+        </div>
+
+        <a href="../index.html" class="logout-btn">Cerrar sesión</a>
+      </div>
+
+      <div class="summary-card">
+        <div>
+          <span class="summary-label">Estado actual</span>
+          <h3>Acceso permitido</h3>
+          <p>Tu cuenta se encuentra activa para ingresar al estacionamiento.</p>
+        </div>
+
+      </div>
+
+      <div class="dashboard-actions">
+        <a href="profile.html" class="dashboard-action">👤 Ver perfil</a>
+        <a href="vehicle.html" class="dashboard-action">🚘 Mi vehículo</a>
+        <a href="parking.html" class="dashboard-action">🅿️ Espacios</a>
+        <a href="history.html" class="dashboard-action">🕒 Historial</a>
+      </div>
+
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="dashboard-box">
+          <div class="box-icon">🚘</div>
+          <h3>Mi vehículo</h3>
+          <p>Placa registrada</p>
+          <strong id="dashboardPlate">ABC-123</strong>
+        </div>
+
+        <div class="dashboard-box">
+          <div class="box-icon">🟢</div>
+          <h3>Estado del cliente</h3>
+          <p>Situación actual</p>
+          <strong id="dashboardStatus">Activo</strong>
+        </div>
+
+        <div class="dashboard-box">
+          <div class="box-icon">🅿️</div>
+          <h3>Espacios disponibles</h3>
+          <p>Disponibilidad actual</p>
+          <strong id="dashboardAvailableSpaces">Calculando...</strong>
+        </div>
+
+        <div class="dashboard-box">
+          <div class="box-icon">🕒</div>
+          <h3>Último ingreso</h3>
+          <p>Registro reciente</p>
+          <strong id="dashboardLastAccess">Calculando...</strong>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../script.js"></script>
+</body>
+</html>

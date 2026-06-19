@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ParkAccess | Historial general</title>
+
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <main class="admin-list-page">
+
+    <section class="admin-list-card">
+
+      <div class="admin-list-top">
+        <div>
+          <p class="tag">Panel administrador</p>
+          <h1>Historial general</h1>
+          <p class="admin-list-description">
+            Registro de ingresos, salidas y espacios utilizados por los clientes.
+          </p>
+        </div>
+
+        <a href="admin_dashboard.html" class="back-btn">Volver al panel</a>
+      </div>
+
+      <div class="admin-list-summary admin-space-summary">
+        <div>
+          <span>Total de registros</span>
+          <strong id="adminHistorialTotal">Calculando...</strong>
+        </div>
+
+        <div>
+          <span>Clientes dentro</span>
+          <strong id="adminHistorialDentro">Calculando...</strong>
+        </div>
+
+        <div>
+          <span>Registros finalizados</span>
+          <strong id="adminHistorialFinalizados">Calculando...</strong>
+        </div>
+      </div>
+
+      <div class="admin-search-box">
+        <input
+          type="text"
+          id="adminBuscarHistorial"
+          placeholder="Buscar por cliente, placa, espacio o estado..."
+        />
+      </div>
+
+      <div class="admin-table-card">
+        <div class="admin-table admin-history-table">
+          <div class="admin-table-header">
+            <span>Cliente</span>
+            <span>Placa</span>
+            <span>Espacio</span>
+            <span>Ingreso</span>
+            <span>Salida</span>
+            <span>Estado</span>
+          </div>
+
+          <div id="adminHistorialList"></div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../script.js"></script>
+</body>
+</html>

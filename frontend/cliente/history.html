@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ParkAccess | Historial</title>
+
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <main class="history-page">
+
+    <section class="history-layout">
+
+      <div class="history-left">
+        <div class="history-brand">
+          <div class="brand-icon">P</div>
+          <span>ParkAccess</span>
+        </div>
+
+        <div class="history-info-card">
+          <div class="history-icon">🕒</div>
+
+          <h2>Historial de ingresos</h2>
+          <p>
+            Consulta los últimos movimientos registrados por el cliente dentro del estacionamiento.
+          </p>
+
+          <div class="history-status">
+            <span></span>
+            Registros actualizados
+          </div>
+        </div>
+      </div>
+
+      <div class="history-right">
+
+        <div class="history-top">
+          <div>
+            <h1>Historial del cliente</h1>
+            <p class="history-description">
+              Lista de ingresos y salidas registradas en el sistema de estacionamiento.
+            </p>
+          </div>
+
+          <a href="dashboard.html" class="back-btn">Volver al panel</a>
+        </div>
+
+        <div class="history-summary">
+          <div>
+            <span>Total de visitas</span>
+            <strong id="historyTotal">Calculando...</strong>
+          </div>
+
+          <div>
+            <span>Último ingreso</span>
+            <strong id="historyLast">Calculando...</strong>
+          </div>
+
+          <div>
+            <span>Estado actual</span>
+            <strong id="historyCurrentStatus" class="status-active">Calculando...</strong>
+          </div>
+        </div>
+
+        <div class="history-table-card">
+
+        <div class="history-table-header">
+          <span>Fecha</span>
+          <span>Ingreso</span>
+          <span>Salida</span>
+          <span>Placa</span>
+          <span>Espacio</span>
+          <span>Estado</span>
+        </div>
+
+          <div id="historyList"></div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../script.js"></script>
+
+</body>
+</html>

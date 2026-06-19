@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ParkAccess | Clientes registrados</title>
+
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <main class="admin-list-page">
+
+    <section class="admin-list-card">
+
+      <div class="admin-list-top">
+        <div>
+          <p class="tag">Panel administrador</p>
+          <h1>Clientes registrados</h1>
+          <p class="admin-list-description">
+            Lista de clientes registrados en el sistema ParkAccess.
+          </p>
+        </div>
+
+        <a href="admin_dashboard.html" class="back-btn">Volver al panel</a>
+      </div>
+
+      <div class="admin-list-summary">
+        <div>
+          <span>Total de clientes</span>
+          <strong id="adminClientesResumen">Calculando...</strong>
+        </div>
+      </div>
+
+      <div class="admin-search-box">
+        <input
+          type="text"
+          id="adminBuscarCliente"
+          placeholder="Buscar por nombre, DNI, correo o placa..."
+        />
+      </div>
+
+
+      <div class="admin-table-header">
+        <span>Nombre</span>
+        <span>DNI</span>
+        <span>Correo</span>
+        <span>Teléfono</span>
+        <span>Placa</span>
+        <span>Estado</span>
+      </div>
+
+          <div id="adminClientesList"></div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../script.js"></script>
+</body>
+</html>

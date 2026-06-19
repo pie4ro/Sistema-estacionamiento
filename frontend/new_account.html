@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ParkAccess | Crear cuenta</title>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <main class="login-container">
+
+    <section class="left-panel">
+      <div class="brand">
+        <div class="brand-icon">P</div>
+        <span>ParkAccess</span>
+      </div>
+
+      <div class="hero-content">
+        <p class="tag">Registro de cliente</p>
+
+        <h1>Crea tu cuenta para acceder al estacionamiento</h1>
+
+        <p class="description">
+          Registra tus datos personales y la información de tu vehículo para gestionar
+          tu acceso de manera rápida, ordenada y segura.
+        </p>
+
+        <div class="stats">
+          <div>
+            <strong>Seguro</strong>
+            <span>Datos protegidos</span>
+          </div>
+
+          <div>
+            <strong>Rápido</strong>
+            <span>Registro sencillo</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="right-panel">
+      <div class="login-card register-card">
+
+        <div class="mobile-logo">
+          <div class="brand-icon">P</div>
+          <span>ParkAccess</span>
+        </div>
+
+        <h2>Crear cuenta</h2>
+        <p class="login-subtitle">Completa tus datos para registrarte.</p>
+
+        <form id="registerForm">
+
+        <div class="input-box">
+          <label for="registerRole">Tipo de cuenta</label>
+          <div class="input-field">
+            <select id="registerRole" required>
+              <option value="cliente">Cliente</option>
+              <option value="administrador">Administrador</option>
+            </select>
+          </div>
+        </div>
+
+          <div class="input-box" id="adminCodeBox" style="display: none;">
+        <label for="adminCode">Clave de administrador</label>
+        <div class="input-field">
+          <input
+            type="password"
+            id="adminCode"
+            placeholder="Ingrese clave de 6 dígitos"
+            maxlength="6"
+          />
+        </div>
+      </div>
+        <div class="input-box">
+          <label for="fullName">Nombre completo</label>
+          <div class="input-field">
+            <input
+              type="text"
+              id="fullName"
+              placeholder="Ejemplo: Juan Pérez"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="input-box" id="dniBox">
+          <label for="dni">DNI</label>
+          <div class="input-field">
+            <input
+              type="text"
+              id="dni"
+              placeholder="Ejemplo: 12345678"
+              maxlength="8"
+            />
+          </div>
+        </div>
+
+        <div class="input-box">
+          <label for="registerEmail">Correo electrónico</label>
+          <div class="input-field">
+            <input
+              type="email"
+              id="registerEmail"
+              placeholder="cliente@gmail.com"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="input-box" id="phoneBox">
+          <label for="phone">Teléfono</label>
+          <div class="input-field">
+            <input
+              type="tel"
+              id="phone"
+              placeholder="Ejemplo: 987654321"
+              maxlength="9"
+            />
+          </div>
+        </div>
+
+        <div class="input-box" id="plateBox">
+          <label for="plate">Placa del vehículo</label>
+          <div class="input-field">
+            <input
+              type="text"
+              id="plate"
+              placeholder="Ejemplo: ABC-123"
+            />
+          </div>
+        </div>
+
+        <div class="input-box" id="carColorBox">
+          <label for="carColor">Color del vehículo</label>
+          <div class="input-field">
+            <input
+              type="text"
+              id="carColor"
+              placeholder="Ejemplo: Negro"
+            />
+          </div>
+        </div>
+
+        <div class="input-box">
+          <label for="registerPassword">Contraseña</label>
+          <div class="input-field">
+            <input
+              type="password"
+              id="registerPassword"
+              placeholder="Crea una contraseña"
+              maxlength="20"
+              required
+            />
+          </div>
+        </div>
+
+          <button type="submit" class="btn-login">Crear cuenta</button>
+
+          <p class="register">
+            ¿Ya tienes cuenta?
+            <a href="index.html">Iniciar sesión</a>
+          </p>
+
+        </form>
+      </div>
+    </section>
+
+  </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+</body>
+</html>

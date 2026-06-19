@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ParkAccess | Mi vehículo</title>
+
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <main class="vehicle-page">
+
+    <section class="vehicle-layout">
+
+      <div class="vehicle-left">
+        <div class="vehicle-brand">
+          <div class="brand-icon">P</div>
+          <span>ParkAccess</span>
+        </div>
+
+        <div class="vehicle-photo-card">
+          <div class="vehicle-image">
+            <img
+              id="vehiclePreview"
+              src="https://cdn-icons-png.flaticon.com/512/2554/2554896.png"
+              alt="Imagen del vehículo"
+            />
+          </div>
+
+          <label for="vehiclePhoto" class="upload-photo-btn">
+            Subir foto del vehículo
+          </label>
+
+          <input
+            type="file"
+            id="vehiclePhoto"
+            accept="image/*"
+            hidden
+          />
+
+          <h2>Vehículo autorizado</h2>
+
+          <div class="vehicle-status">
+            <span></span>
+            Acceso permitido
+          </div>
+        </div>
+      </div>
+
+      <div class="vehicle-right">
+
+        <div class="vehicle-top">
+          <div>
+            <h1>Información del vehículo</h1>
+            <p class="vehicle-description">
+              Datos principales del vehículo asociado a la cuenta del cliente.
+            </p>
+          </div>
+
+          <a href="dashboard.html" class="back-btn">Volver al panel</a>
+        </div>
+
+        <div class="vehicle-main-card">
+          <div>
+            <span class="vehicle-label">Número de placa</span>
+
+          <div class="plate-box" id="vehiclePlate">ABC-123</div>
+
+        <div class="vehicle-data-grid">
+
+          <div class="vehicle-data-card">
+            <div class="data-icon">🚘</div>
+            <div>
+              <span>Tipo de vehículo</span>
+              <strong id="vehicleType">Automóvil</strong>
+            </div>
+          </div>
+
+          <div class="vehicle-data-card">
+            <div class="data-icon">🎨</div>
+            <div>
+              <span>Color</span>
+              <strong id="vehicleColor">Negro</strong>
+            </div>
+          </div>
+
+          <div class="vehicle-data-card">
+            <div class="data-icon">✅</div>
+            <div>
+              <span>Estado de acceso</span>
+              <strong id="vehicleStatus" class="status-active">Calculando...</strong>
+            </div>
+          </div>
+
+          <div class="vehicle-data-card">
+            <div class="data-icon">📍</div>
+            <div>
+              <span>Zona asignada</span>
+              <strong id="vehicleZone">Calculando...</strong>
+            </div>
+          </div>
+
+          <div class="vehicle-data-card">
+            <div class="data-icon">🕒</div>
+            <div>
+              <span>Último ingreso</span>
+              <strong id="vehicleLastAccess">Calculando...</strong>
+            </div>
+          </div>
+
+          <div class="vehicle-data-card">
+            <div class="data-icon">🛡️</div>
+            <div>
+              <span>Validación</span>
+              <strong id="vehicleValidation">Calculando...</strong>
+            </div>
+          </div>
+
+        <div class="vehicle-edit-actions">
+          <button type="button" id="editVehicleBtn" class="edit-profile-btn">
+            ✏️ Editar vehículo
+          </button>
+
+          <button type="button" id="saveVehicleBtn" class="save-profile-btn" hidden>
+            💾 Guardar vehículo
+          </button>
+        </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../script.js"></script>
+</body>
+</html>

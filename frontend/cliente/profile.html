@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ParkAccess | Perfil del cliente</title>
+
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <main class="profile-page">
+
+    <section class="profile-layout">
+
+      <div class="profile-left">
+        <div class="profile-brand">
+          <div class="brand-icon">P</div>
+          <span>ParkAccess</span>
+        </div>
+
+        <div class="profile-avatar-card">
+        <div class="profile-image">
+            <img
+            id="profilePreview"
+            src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
+            alt="Foto de perfil del cliente"
+            />
+        </div>
+
+        <label for="profilePhoto" class="upload-photo-btn">
+          Subir foto
+        </label>
+
+        <input
+          type="file"
+          id="profilePhoto"
+          accept="image/*"
+          hidden
+        />
+
+        <button type="button" id="savePhotoBtn" class="save-photo-btn" hidden>
+          Guardar foto
+        </button>
+
+          <h2>Cliente registrado</h2>
+          <p>Cuenta activa en el sistema de estacionamiento.</p>
+
+          <div class="profile-status">
+            <span></span>
+            Estado activo
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-right">
+
+        <div class="profile-top">
+          <div>
+            <h1>Información personal</h1>
+            <p class="profile-description">
+              Datos principales registrados para el acceso seguro al estacionamiento.
+            </p>
+          </div>
+
+          <a href="dashboard.html" class="back-btn">Volver al panel</a>
+        </div>
+
+        <div class="profile-data-grid">
+
+          <div class="profile-data-card">
+            <div class="data-icon">👤</div>
+            <div>
+              <span>Nombre completo</span>
+              <strong id="profileName">Cliente de prueba</strong>
+            </div>
+          </div>
+
+          <div class="profile-data-card">
+            <div class="data-icon">🪪</div>
+            <div>
+              <span>DNI</span>
+              <strong id="profileDni">12345678</strong>
+            </div>
+          </div>
+
+          <div class="profile-data-card">
+            <div class="data-icon">✉️</div>
+            <div>
+              <span>Correo electrónico</span>
+              <strong id="profileEmail">cliente@gmail.com</strong>
+            </div>
+          </div>
+
+          <div class="profile-data-card">
+            <div class="data-icon">📱</div>
+            <div>
+              <span>Teléfono</span>
+              <strong id="profilePhone">987654321</strong>
+            </div>
+          </div>
+
+          <div class="profile-data-card">
+            <div class="data-icon">🚘</div>
+            <div>
+              <span>Placa del vehículo</span>
+              <strong id="profilePlate">ABC-123</strong>
+            </div>
+          </div>
+
+          <div class="profile-data-card">
+            <div class="data-icon">✅</div>
+            <div>
+              <span>Estado de cuenta</span>
+              <strong class="status-active">Activo</strong>
+            </div>
+          </div>
+
+          <div class="profile-actions">
+            <button type="button" id="editProfileBtn" class="edit-profile-btn">
+              ✏️ Editar datos
+            </button>
+
+            <button type="button" id="saveProfileBtn" class="save-profile-btn" hidden>
+              💾 Guardar cambios
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../script.js"></script>
+  
+</body>
+</html>

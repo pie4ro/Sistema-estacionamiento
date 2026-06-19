@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ParkAccess | Espacios disponibles</title>
+
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <main class="parking-container">
+
+    <section class="parking-card">
+
+      <div class="parking-header">
+        <div>
+          <h1>Espacios del estacionamiento</h1>
+          <p>Croquis visual de los 12 espacios disponibles para clientes.</p>
+        </div>
+
+        <a href="dashboard.html" class="back-btn">Volver al panel</a>
+      </div>
+
+      <div class="parking-summary">
+        <div>
+          <span>Total</span>
+          <strong>12 espacios</strong>
+        </div>
+
+        <div>
+          <span>Disponibles</span>
+          <strong class="available-text" id="availableSpacesText">12 libres</strong>
+        </div>
+
+        <div>
+          <span>Ocupados</span>
+          <strong class="occupied-text" id="occupiedSpacesText">0 ocupados</strong>
+        </div>
+      </div>
+
+      <div class="parking-map">
+
+        <div class="entrance">ENTRADA</div>
+
+        <div class="parking-row">
+          <div class="parking-space available" data-status="available">
+            <span>A1</span>
+            <small>Libre</small>
+          </div>
+
+          <div class="parking-space available" data-status="available">
+            <span>A2</span>
+            <small>Libre</small>
+          </div>
+
+          <div class="parking-space available" data-status="available">
+            <span>A3</span>
+            <small>Libre</small>
+          </div>
+
+          <div class="parking-space available" data-status="available">
+            <span>A4</span>
+            <small>Libre</small>
+          </div>
+        </div>
+
+        <div class="road">VÍA DE CIRCULACIÓN</div>
+
+        <div class="parking-row">
+          <div class="parking-space available" data-status="available">
+            <span>B1</span>
+            <small>Libre</small>
+          </div>
+
+          <div class="parking-space available" data-status="available">
+            <span>B2</span>
+            <small>Libre</small>
+          </div>
+
+          <div class="parking-space available" data-status="available">
+            <span>B3</span>
+            <small>Libre</small>
+          </div>
+
+          <div class="parking-space available" data-status="available">
+            <span>B4</span>
+            <small>Libre</small>
+          </div>
+        </div>
+
+        <div class="road">VÍA DE CIRCULACIÓN</div>
+
+        <div class="parking-row">
+          <div class="parking-space available" data-status="available">
+            <span>C1</span>
+            <small>Libre</small>
+          </div>
+
+          <div class="parking-space available" data-status="available">
+            <span>C2</span>
+            <small>Libre</small>
+          </div>
+
+          <div class="parking-space available" data-status="available">
+            <span>C3</span>
+            <small>Libre</small>
+          </div>
+
+          <div class="parking-space available" data-status="available">
+            <span>C4</span>
+            <small>Libre</small>
+          </div>
+        </div>
+
+        <div class="exit">SALIDA</div>
+
+      </div>
+
+      <div class="selected-space-box">
+        <span>Espacio seleccionado:</span>
+        <strong id="selectedSpace">Ninguno</strong>
+      </div>
+
+      <div class="legend">
+        <div>
+          <span class="legend-box available-box"></span>
+          Espacio disponible
+        </div>
+
+        <div>
+          <span class="legend-box occupied-box"></span>
+          Espacio ocupado
+        </div>
+
+        <div>
+          <span class="legend-box selected-box"></span>
+          Espacio separado
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../script.js"></script>
+</body>
+</html>

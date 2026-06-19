@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ParkAccess | Vehículos registrados</title>
+
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <main class="admin-list-page">
+
+    <section class="admin-list-card">
+
+      <div class="admin-list-top">
+        <div>
+          <p class="tag">Panel administrador</p>
+          <h1>Vehículos registrados</h1>
+          <p class="admin-list-description">
+            Lista de vehículos asociados a los clientes registrados en ParkAccess.
+          </p>
+        </div>
+
+        <a href="admin_dashboard.html" class="back-btn">Volver al panel</a>
+      </div>
+
+      <div class="admin-list-summary">
+        <div>
+          <span>Total de vehículos</span>
+          <strong id="adminVehiculosResumen">Calculando...</strong>
+        </div>
+      </div>
+
+      <div class="admin-table-card">
+        <div class="admin-table admin-vehicle-table">
+          <div class="admin-table-header">
+            <span>Placa</span>
+            <span>Propietario</span>
+            <span>Correo</span>
+            <span>Teléfono</span>
+            <span>Estado</span>
+          </div>
+
+          <div id="adminVehiculosList"></div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../script.js"></script>
+</body>
+</html>

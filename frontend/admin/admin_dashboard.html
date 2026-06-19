@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ParkAccess | Administrador</title>
+
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <main class="dashboard-layout">
+
+    <section class="dashboard-sidebar">
+      <div class="brand">
+        <div class="brand-icon">P</div>
+        <span>ParkAccess</span>
+      </div>
+
+      <div class="sidebar-content">
+        <p class="tag">Panel administrador</p>
+
+        <h1>Gestión general del estacionamiento</h1>
+
+        <p class="description">
+          Desde este panel puedes controlar clientes, vehículos, espacios y registros del sistema.
+        </p>
+      </div>
+    </section>
+
+    <section class="dashboard-main">
+
+      <div class="dashboard-top">
+        <div>
+           <h2>Bienvenido , <span id="clientName"></span></h2>
+        </div>
+
+
+
+        <a href="../index.html" class="logout-btn">Cerrar sesión</a>
+      </div>
+
+      <div class="summary-card">
+        <div>
+          <span class="summary-label">Estado del sistema</span>
+          <h3>Administración activa</h3>
+          <p>Control general de usuarios, vehículos y espacios del estacionamiento.</p>
+        </div>
+      </div>
+
+      <div class="dashboard-actions">
+        <a href="admin_clientes.html" class="dashboard-action">👥 Clientes</a>
+        <a href="admin_vehiculos.html" class="dashboard-action">🚘 Vehículos</a>
+        <a href="admin_espacios.html" class="dashboard-action">🅿️ Espacios</a>
+        <a href="admin_historial.html" class="dashboard-action">🕒 Historial</a>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="dashboard-box">
+          <div class="box-icon">👥</div>
+          <h3>Clientes registrados</h3>
+          <p>Total de clientes en el sistema</p>
+          <strong id="adminTotalClientes">Calculando...</strong>
+        </div>
+
+        <div class="dashboard-box">
+          <div class="box-icon">🚘</div>
+          <h3>Vehículos registrados</h3>
+          <p>Vehículos asociados a clientes</p>
+          <strong id="adminTotalVehiculos">Calculando...</strong>
+        </div>
+
+        <div class="dashboard-box">
+          <div class="box-icon">🅿️</div>
+          <h3>Espacios disponibles</h3>
+          <p>Disponibilidad actual</p>
+          <strong id="adminEspaciosDisponibles">Calculando...</strong>
+        </div>
+
+        <div class="dashboard-box">
+          <div class="box-icon">✅</div>
+          <h3>Estado</h3>
+          <p>Sistema funcionando</p>
+          <strong>Activo</strong>
+        </div>
+      </div>
+
+            <div class="admin-table-card" id="adminClientesSection" hidden>
+        <h3>Clientes registrados</h3>
+        <p id="adminClientesResumen">Total de clientes: 0</p>
+
+        <div class="admin-table">
+            <div class="admin-table-header">
+            <span>Nombre</span>
+            <span>DNI</span>
+            <span>Correo</span>
+            <span>Teléfono</span>
+            <span>Placa</span>
+            </div>
+
+            <div id="adminClientesList"></div>
+        </div>
+        </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../script.js"></script>
+</body>
+</html>

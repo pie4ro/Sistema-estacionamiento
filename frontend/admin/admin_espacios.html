@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ParkAccess | Espacios</title>
+
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <main class="admin-list-page">
+
+    <section class="admin-list-card">
+
+      <div class="admin-list-top">
+        <div>
+          <p class="tag">Panel administrador</p>
+          <h1>Espacios del estacionamiento</h1>
+          <p class="admin-list-description">
+            Estado actual de los espacios libres, ocupados y reservados por clientes.
+          </p>
+        </div>
+
+        <a href="admin_dashboard.html" class="back-btn">Volver al panel</a>
+      </div>
+
+      <div class="admin-list-summary admin-space-summary">
+        <div>
+          <span>Total de espacios</span>
+          <strong>12 espacios</strong>
+        </div>
+
+        <div>
+          <span>Disponibles</span>
+          <strong id="adminEspaciosLibres">Calculando...</strong>
+        </div>
+
+        <div>
+          <span>Ocupados</span>
+          <strong id="adminEspaciosOcupados">Calculando...</strong>
+        </div>
+      </div>
+
+      <div class="admin-table-card">
+        <div class="admin-table admin-space-table">
+          <div class="admin-table-header">
+            <span>Espacio</span>
+            <span>Estado</span>
+            <span>Cliente</span>
+            <span>Tipo</span>
+            <span>Acción</span>
+          </div>
+
+          <div id="adminEspaciosList"></div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../script.js"></script>
+</body>
+</html>
