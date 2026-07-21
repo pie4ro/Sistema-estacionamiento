@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkAccess | Chat Administrador</title>
+
+    <link rel="stylesheet" href="../styles.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+</head>
+
+<body class="admin-dashboard-page">
+
+<div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🛡️ Administrador
+        </div>
+
+        <nav>
+
+            <a href="admin_dashboard.html">🏠 Panel</a>
+
+            <a href="admin_clientes.html">👥 Clientes</a>
+
+            <a href="admin_vehiculos.html">🚘 Vehículos</a>
+
+            <a href="admin_espacios.html">🅿 Espacios</a>
+
+            <a href="admin_historial.html">📋 Historial</a>
+
+            <a href="admin_chat.html" class="active">💬 Chat</a>
+
+        </nav>
+
+        <a href="../index.html" class="logout-btn">
+            Cerrar sesión
+        </a>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+
+    <main class="dashboard-content">
+
+        <div class="dashboard-header">
+
+            <div>
+
+                <h1>Centro de Mensajes</h1>
+
+                <p>
+                    Comunícate con los clientes registrados en ParkAccess.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="chat-container">
+
+            <!-- CLIENTES -->
+
+            <div class="chat-users">
+
+                <h2>Clientes</h2>
+
+                <input
+                    type="text"
+                    id="buscarClienteChat"
+                    placeholder="Buscar cliente..."
+                >
+
+                <div id="listaClientesChat">
+
+                </div>
+
+            </div>
+
+            <!-- CHAT -->
+
+            <div class="chat-box">
+
+                <div id="chatHeader">
+
+                    <h2>Selecciona un cliente</h2>
+
+                </div>
+
+                <div
+                    id="mensajesAdmin"
+                    class="mensajes"
+                >
+
+                </div>
+
+                <div class="chat-input">
+
+                    <input
+                        type="text"
+                        id="txtMensajeAdmin"
+                        placeholder="Escribe un mensaje..."
+                    >
+
+                    <button
+                        id="btnEnviarAdmin"
+                    >
+
+                        Enviar
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="../js/script.js"></script>
+<script src="../js/admin_chat.js"></script>
+
+</body>
+
+</html>
