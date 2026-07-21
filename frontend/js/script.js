@@ -1077,10 +1077,6 @@ async function cargarClientesAdmin() {
         </select>
 
         <div class="admin-actions">
-            <button class="btn-view" data-id="${cliente.id}">
-                👁 Ver
-            </button>
-
             <button class="btn-chat" data-id="${cliente.id}">
                 💬 Chat
             </button>
@@ -1090,30 +1086,11 @@ async function cargarClientesAdmin() {
       adminClientesList.appendChild(row);
 
       const estadoSelect = row.querySelector(".client-status-select");
-      const btnView = row.querySelector(".btn-view");
-
-      btnView.addEventListener("click", function () {
-
-          alert(`
-      Nombre: ${cliente.nombre_completo}
-
-      Correo: ${cliente.correo}
-
-      Placa: ${cliente.placa}
-
-      Teléfono: ${cliente.telefono}
-          `);
-
-      });
-
       const btnChat = row.querySelector(".btn-chat");
 
       btnChat.addEventListener("click", function () {
-
           localStorage.setItem("chatCliente", cliente.id);
-
           window.location.href = "admin_chat.html";
-
       });
 
       estadoSelect.addEventListener("change", async function () {

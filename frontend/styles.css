@@ -480,16 +480,14 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
+  width: 100%;
 }
 
-.dashboard-chat-box{
-    grid-column: 1 / -1;
-    width: 450px;
-
-    justify-self: center;
-
-    margin-top: 30px;
-    margin-left: 250px;
+.dashboard-chat-box {
+  grid-column: 1 / -1;
+  width: 100%;
+  justify-self: center;
+  margin-top: 10px;
 }
 
 .dashboard-box {
