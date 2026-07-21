@@ -1,80 +1,133 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>ParkAccess | Chat</title>
 
     <link rel="stylesheet" href="../styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
 
 <body class="dashboard-page">
+
 <div class="dashboard-layout">
 
     <!-- SIDEBAR -->
+
     <aside class="sidebar">
-        <div class="logo">
-            🚗 ParkAccess
-        </div>
-        <nav>
 
-            <a href="dashboard.html">🏠 Dashboard</a>
-            <a href="profile.html">👤 Perfil</a>
-            <a href="vehicle.html">🚘 Vehículo</a>
-            <a href="parking.html">🅿 Espacios</a>
-            <a href="history.html">📋 Historial</a>
-            <a href="chat.html" class="active">💬 Chat</a>
-
-        </nav>
-        <a href="../index.html" class="logout-btn">
-            Cerrar sesión
-        </a>
     </aside>
 
     <!-- CONTENIDO -->
+
     <main class="dashboard-content">
+
         <div class="dashboard-header">
+
             <div>
-                <h1>Chat</h1>
+
                 <p>
-                    Conversa con otros usuarios que se encuentren actualmente dentro del estacionamiento.
+                    Conversa con otros clientes registrados.
                 </p>
+
             </div>
+
         </div>
+
+
         <div class="chat-container">
 
-            <!-- CONTACTOS -->
+            <!-- LISTA DE USUARIOS -->
+
             <div class="chat-users">
-                <h2>Clientes disponibles</h2>
+
+                <h2>Clientes</h2>
+
                 <div id="listaUsuarios">
-                    <!-- Se llena desde Supabase -->
+
+                    <!-- chat.js -->
+
                 </div>
+
             </div>
 
-            <!-- CONVERSACIÓN -->
-            <div class="chat-box">
-                    <div id="chatHeader">
 
-                    <img id="chatFoto"
-                        src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
+            <!-- PANEL DEL CHAT -->
+
+            <div class="chat-box">
+
+                <!-- CABECERA -->
+
+                <div class="chat-header">
+
+                    <img
+                        id="chatFoto"
+                        src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
+                        alt="Foto">
+
                     <div>
+
                         <h2 id="chatNombre">
-                            Selecciona un usuario
+
+                            Selecciona un cliente
+
                         </h2>
 
                         <small id="chatEstado">
 
+                            Sin conversación iniciada
+
                         </small>
+
+                    </div>
+
                 </div>
+
+
+                <!-- MENSAJES -->
+
+                <div
+                    id="mensajes"
+                    class="mensajes">
+
                 </div>
+
+
+                <!-- ESCRIBIR MENSAJE -->
+
+                <div class="chat-input">
+
+                    <input
+                        id="txtMensaje"
+                        type="text"
+                        placeholder="Escribe un mensaje...">
+
+                    <button id="btnEnviar">
+
+                        Eniar
+
+                    </button>
+
+                </div>
+
             </div>
+
         </div>
+
     </main>
+
 </div>
+
 
 <script src="../js/script.js"></script>
 <script src="../js/chat.js"></script>
 
 </body>
+
 </html>

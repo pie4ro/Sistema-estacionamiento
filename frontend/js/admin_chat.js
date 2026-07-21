@@ -207,3 +207,9 @@ supabaseClient
     )
     .subscribe();
 
+const clienteSeleccionado = localStorage.getItem("chatCliente");
+if (clienteSeleccionado) {
+
+    abrirConversacion(clienteSeleccionado);
+
+}

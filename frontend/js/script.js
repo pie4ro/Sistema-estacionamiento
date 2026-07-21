@@ -1064,7 +1064,7 @@ async function cargarClientesAdmin() {
 
       const estadoActual = cliente.estado_cliente || "Activo";
 
-      row.innerHTML = `
+    row.innerHTML = `
         <span>${cliente.nombre_completo || "Sin nombre"}</span>
         <span>${cliente.dni || "Sin DNI"}</span>
         <span>${cliente.correo || "Sin correo"}</span>
@@ -1072,18 +1072,49 @@ async function cargarClientesAdmin() {
         <span>${cliente.placa || "Sin placa"}</span>
 
         <select class="client-status-select" data-id="${cliente.id}">
-          <option value="Activo" ${estadoActual === "Activo" ? "selected" : ""}>
-            Activo
-          </option>
-          <option value="Inactivo" ${estadoActual === "Inactivo" ? "selected" : ""}>
-            Inactivo
-          </option>
+            <option value="Activo" ${estadoActual==="Activo"?"selected":""}>Activo</option>
+            <option value="Inactivo" ${estadoActual==="Inactivo"?"selected":""}>Inactivo</option>
         </select>
-      `;
+
+        <div class="admin-actions">
+            <button class="btn-view" data-id="${cliente.id}">
+                👁 Ver
+            </button>
+
+            <button class="btn-chat" data-id="${cliente.id}">
+                💬 Chat
+            </button>
+        </div>
+    `;
 
       adminClientesList.appendChild(row);
 
       const estadoSelect = row.querySelector(".client-status-select");
+      const btnView = row.querySelector(".btn-view");
+
+      btnView.addEventListener("click", function () {
+
+          alert(`
+      Nombre: ${cliente.nombre_completo}
+
+      Correo: ${cliente.correo}
+
+      Placa: ${cliente.placa}
+
+      Teléfono: ${cliente.telefono}
+          `);
+
+      });
+
+      const btnChat = row.querySelector(".btn-chat");
+
+      btnChat.addEventListener("click", function () {
+
+          localStorage.setItem("chatCliente", cliente.id);
+
+          window.location.href = "admin_chat.html";
+
+      });
 
       estadoSelect.addEventListener("change", async function () {
         const clienteId = estadoSelect.getAttribute("data-id");
