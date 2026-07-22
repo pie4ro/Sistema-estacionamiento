@@ -59,9 +59,49 @@ if (loginForm) {
 }
 
 const registerForm = document.getElementById("registerForm");
+let reglasAceptadas = false;
+document.getElementById("acceptRules").checked = false;
 
 if (registerForm) {
-    const registerRole = document.getElementById("registerRole");
+const registerRole = document.getElementById("registerRole");
+
+if(registerRole){
+
+    registerRole.addEventListener("change",()=>{
+
+        if(registerRole.value==="administrador"){
+
+            document
+            .getElementById("adminRulesModal")
+            .classList.add("active");
+
+        }
+
+    });
+
+}
+
+const btnAceptar = document.getElementById("btnAceptarReglas");
+
+if(btnAceptar){
+
+    btnAceptar.addEventListener("click",()=>{
+
+        if(!document.getElementById("acceptRules").checked){
+
+            alert("Debes aceptar las reglas");
+            return;
+
+        }
+
+        document
+        .getElementById("adminRulesModal")
+        .classList.remove("active");
+
+    });
+
+}
+
     const plateBox = document.getElementById("plateBox");
     const dniBox = document.getElementById("dniBox");
     const phoneBox = document.getElementById("phoneBox");
@@ -138,6 +178,14 @@ const adminCodeInput = document.getElementById("adminCode");
     }
 
     if (role === "administrador") {
+
+      if(!reglasAceptadas){
+
+        alert("Debes aceptar las reglas antes de crear un administrador.");
+
+        return;
+
+    }
       if (!adminCode) {
         alert("Ingresa la clave de administrador");
         return;
