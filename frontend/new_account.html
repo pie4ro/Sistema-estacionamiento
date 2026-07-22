@@ -66,6 +66,8 @@
         </div>
 
           <div class="input-box" id="adminCodeBox" style="display: none;">
+          <p class="login-subtitle">Si se crea una cuenta de administrador debe cumplir con las reglas las cuales se mostrará al crear la cuenta,¡ATENCIÓN!</p>
+
         <label for="adminCode">Clave de administrador</label>
         <div class="input-field">
           <input
@@ -172,6 +174,59 @@
 
   </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- MODAL DE REGLAS ADMIN -->
+
+<div id="adminRulesModal" class="admin-modal">
+
+    <div class="admin-modal-content">
+
+        <h2>⚠️ Creación de Administrador</h2>
+
+        <p>
+            Antes de crear una cuenta de administrador, debes aceptar las políticas del sistema.
+        </p>
+
+        <div class="admin-rules">
+
+            <ul>
+
+                <li>La cuenta de administrador tendrá acceso a la gestión de clientes, vehículos, espacios,  historial, etc.</li>
+
+                <li> Todas las acciones realizadas quedarán registradas en el sistema.</li>
+
+                <li>No compartas la clave de administrador.</li>
+
+                <li>El uso indebido de los privilegios de administrador puede comprometer la seguridad del sistema.</li>
+
+                <li>El uso indebido ocasionará la suspensión inmediata.</li>
+
+                <li>Respeta las políticas de seguridad del sistema.</li>
+
+                <li>Al crear la cuenta, usted acepta cumplir las políticas de uso de ParkAccess.</li>
+
+            </ul>
+
+        </div>
+
+        <label class="admin-check">
+
+            <input type="checkbox" id="acceptRules">
+
+            He leído y acepto todas las reglas.
+
+        </label>
+
+        <button id="btnAceptarReglas">
+
+            Continuar
+
+        </button>
+
+    </div>
+
+</div>
+
 
 <script src="js/script.js"></script>
 </body>
