@@ -50,65 +50,18 @@ if (loginForm) {
 
     alert("Inicio de sesión exitoso");
 
-if(
-    clienteData.rol==="administrador" ||
-    clienteData.rol==="administrador_premium"
-){
-    window.location.href="admin/admin_dashboard.html";
-}
-else{
-    window.location.href="cliente/dashboard.html";
-}
+    if (clienteData.rol === "administrador") {
+      window.location.href = "admin/admin_dashboard.html";
+    } else {
+      window.location.href = "cliente/dashboard.html";
+    }
   });
 }
 
 const registerForm = document.getElementById("registerForm");
-let reglasAceptadas = false;
-document.getElementById("acceptRules").checked = false;
 
 if (registerForm) {
-const registerRole = document.getElementById("registerRole");
-
-if(registerRole){
-
-    registerRole.addEventListener("change",()=>{
-
-        if(
-            registerRole.value==="administrador" ||
-            registerRole.value==="administrador_premium"
-        ){
-
-            document
-            .getElementById("adminRulesModal")
-            .classList.add("active");
-
-        }
-
-    });
-
-}
-
-const btnAceptar = document.getElementById("btnAceptarReglas");
-
-if(btnAceptar){
-
-    btnAceptar.addEventListener("click",()=>{
-
-        if(!document.getElementById("acceptRules").checked){
-
-            alert("Debes aceptar las reglas");
-            return;
-
-        }
-
-        document
-        .getElementById("adminRulesModal")
-        .classList.remove("active");
-
-    });
-
-}
-
+    const registerRole = document.getElementById("registerRole");
     const plateBox = document.getElementById("plateBox");
     const dniBox = document.getElementById("dniBox");
     const phoneBox = document.getElementById("phoneBox");
@@ -122,10 +75,7 @@ const adminCodeInput = document.getElementById("adminCode");
 
   if (registerRole && plateBox && dniBox && phoneBox && plateInput && dniInput && phoneInput) {
     registerRole.addEventListener("change", function () {
-      if(
-        registerRole.value==="administrador" ||
-        registerRole.value==="administrador_premium"
-      ){
+      if (registerRole.value === "administrador") {
         dniBox.style.display = "none";
         phoneBox.style.display = "none";
         plateBox.style.display = "none";
@@ -187,18 +137,7 @@ const adminCodeInput = document.getElementById("adminCode");
       }
     }
 
-      if (
-          role === "administrador" ||
-          role === "administrador_premium"
-      ) {
-
-      if(!reglasAceptadas){
-
-        alert("Debes aceptar las reglas antes de crear un administrador.");
-
-        return;
-
-    }
+    if (role === "administrador") {
       if (!adminCode) {
         alert("Ingresa la clave de administrador");
         return;
@@ -1008,14 +947,7 @@ async function cargarPanelAdmin() {
     .eq("id", userId)
     .single();
 
-  if (
-      adminError ||
-      !adminData ||
-      (
-          adminData.rol !== "administrador" &&
-          adminData.rol !== "administrador_premium"
-      )
-  ) {
+  if (adminError || !adminData || adminData.rol !== "administrador") {
     alert("No tienes permiso para entrar al panel administrador");
     window.location.href = "../dashboard.html";
     return;
@@ -1095,14 +1027,7 @@ async function cargarClientesAdmin() {
     .eq("id", userData.user.id)
     .single();
 
-  if (
-      adminError ||
-      !adminData ||
-      (
-        adminData.rol !== "administrador" &&
-        adminData.rol !== "administrador_premium"
-      )
-    ) {
+  if (adminError || !adminData || adminData.rol !== "administrador") {
     alert("No tienes permiso para ver esta página");
     window.location.href = "../dashboard.html";
     return;
@@ -1236,14 +1161,7 @@ async function cargarVehiculosAdmin() {
     .eq("id", userData.user.id)
     .single();
 
-    if (
-        adminError ||
-        !adminData ||
-        (
-            adminData.rol !== "administrador" &&
-            adminData.rol !== "administrador_premium"
-        )
-    ) {
+  if (adminError || !adminData || adminData.rol !== "administrador") {
     alert("No tienes permiso para ver esta página");
     window.location.href = "dashboard.html";
     return;
@@ -1466,14 +1384,7 @@ async function cargarEspaciosAdmin() {
     .eq("id", userData.user.id)
     .single();
 
-    if (
-        adminError ||
-        !adminData ||
-        (
-            adminData.rol !== "administrador" &&
-            adminData.rol !== "administrador_premium"
-        )
-    ) {
+  if (adminError || !adminData || adminData.rol !== "administrador") {
     alert("No tienes permiso para ver esta página");
     window.location.href = "../dashboard.html";
     return;
@@ -1646,14 +1557,7 @@ async function cargarHistorialAdmin() {
     .eq("id", userData.user.id)
     .single();
 
-    if (
-        adminError ||
-        !adminData ||
-        (
-            adminData.rol !== "administrador" &&
-            adminData.rol !== "administrador_premium"
-        )
-    ) {
+  if (adminError || !adminData || adminData.rol !== "administrador") {
     alert("No tienes permiso para ver esta página");
     window.location.href = "../dashboard.html";
     return;
