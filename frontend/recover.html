@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ParkAccess | Recuperar contraseña</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="login-container">
+    <section class="right-panel" style="width: 100%; display: flex; justify-content: center;">
+      <div class="login-card">
+        <h2>Recuperar contraseña</h2>
+        <p class="login-subtitle">Ingresa tu correo electrónico y te enviaremos las instrucciones.</p>
+
+        <form id="recoverForm">
+          <div class="input-box">
+            <label for="recover-email">Correo electrónico</label>
+            <div class="input-field">
+              <input type="email" id="recover-email" placeholder="cliente@gmail.com" required />
+            </div>
+          </div>
+
+          <button type="submit" class="btn-login">Enviar instrucciones</button>
+
+          <p class="register">
+            <a href="index.html">Volver al inicio de sesión</a>
+          </p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/recover.js"></script>
+</body>
+</html>
