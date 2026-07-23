@@ -59,49 +59,9 @@ if (loginForm) {
 }
 
 const registerForm = document.getElementById("registerForm");
-let reglasAceptadas = false;
-document.getElementById("acceptRules").checked = false;
 
 if (registerForm) {
-const registerRole = document.getElementById("registerRole");
-
-if(registerRole){
-
-    registerRole.addEventListener("change",()=>{
-
-        if(registerRole.value==="administrador"){
-
-            document
-            .getElementById("adminRulesModal")
-            .classList.add("active");
-
-        }
-
-    });
-
-}
-
-const btnAceptar = document.getElementById("btnAceptarReglas");
-
-if(btnAceptar){
-
-    btnAceptar.addEventListener("click",()=>{
-
-        if(!document.getElementById("acceptRules").checked){
-
-            alert("Debes aceptar las reglas");
-            return;
-
-        }
-
-        document
-        .getElementById("adminRulesModal")
-        .classList.remove("active");
-
-    });
-
-}
-
+    const registerRole = document.getElementById("registerRole");
     const plateBox = document.getElementById("plateBox");
     const dniBox = document.getElementById("dniBox");
     const phoneBox = document.getElementById("phoneBox");
@@ -178,14 +138,6 @@ const adminCodeInput = document.getElementById("adminCode");
     }
 
     if (role === "administrador") {
-
-      if(!reglasAceptadas){
-
-        alert("Debes aceptar las reglas antes de crear un administrador.");
-
-        return;
-
-    }
       if (!adminCode) {
         alert("Ingresa la clave de administrador");
         return;
@@ -272,19 +224,24 @@ async function cargarDatosUsuario() {
     return;
   }
 
-  const user = data.user;
-  const datos = user.user_metadata || {};
+const user = data.user;
 
-  const nombre = datos.nombre_completo || "Cliente";
-  const dni = datos.dni || "No registrado";
-  const telefono = datos.telefono || "No registrado";
-  const placa = datos.placa || "No registrada";
-  const correo = user.email || "No registrado";
-  const { data: clienteData } = await supabaseClient
-    .from("clientes")
-    .select("foto_url, estado_vehiculo, placa, tipo_vehiculo, color_vehiculo, zona_asignada, validacion_vehiculo")
-    .eq("id", user.id)
-    .single();
+const { data: clienteData, error: clienteError } = await supabaseClient
+  .from("clientes")
+  .select("*")
+  .eq("id", user.id)
+  .single();
+
+if (clienteError) {
+  console.log(clienteError);
+  return;
+}
+
+const nombre = clienteData.nombre_completo || "Cliente";
+const dni = clienteData.dni || "No registrado";
+const telefono = clienteData.telefono || "No registrado";
+const placa = clienteData.placa || "No registrada";
+const correo = clienteData.correo || user.email;
 
   const profilePreview = document.getElementById("profilePreview");
 
@@ -1690,6 +1647,37 @@ async function cargarHistorialAdmin() {
     });
   }
 }
-
 cargarHistorialAdmin();
+});
+
+const role = document.getElementById("registerRole");
+
+role.addEventListener("change",()=>{
+
+    if(role.value==="administrador"){
+
+        document
+        .getElementById("adminRulesModal")
+        .classList.add("active");
+
+    }
+
+});
+
+document
+.getElementById("btnAceptarReglas")
+.addEventListener("click",()=>{
+
+    if(!document.getElementById("acceptRules").checked){
+
+        alert("Debes aceptar las reglas.");
+
+        return;
+
+    }
+
+    document
+    .getElementById("adminRulesModal")
+    .classList.remove("active");
+
 });
