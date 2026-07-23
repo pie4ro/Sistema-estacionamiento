@@ -16,8 +16,8 @@ El proyecto cuenta con dos tipos de usuario:
 # Tecnologías utilizadas
 
 * HTML5
-* CSS3
-* JavaScript
+* CSS3 (Modularizado en múltiples archivos con `@import`)
+* JavaScript (Modularizado en múltiples archivos de lógica y vistas)
 * Supabase Auth
 * Supabase Database
 * Supabase Storage
@@ -31,28 +31,50 @@ El proyecto cuenta con dos tipos de usuario:
 
 # Estructura del proyecto
 
-El proyecto está organizado separando las páginas del administrador, las páginas del cliente y los archivos generales.
+El proyecto está organizado separando las páginas del administrador, las páginas del cliente, los estilos CSS modulares y los scripts de lógica en JavaScript dentro de carpetas dedicadas.
 
 ```text
 frontend/
 │
 ├── admin/
-│   ├── admin_dashboard.html
+│   ├── admin_chat.html
 │   ├── admin_clientes.html
-│   ├── admin_vehiculos.html
+│   ├── admin_dashboard.html
 │   ├── admin_espacios.html
-│   └── admin_historial.html
+│   ├── admin_historial.html
+│   └── admin_vehiculos.html
 │
 ├── cliente/
+│   ├── chat.html
 │   ├── dashboard.html
 │   ├── history.html
 │   ├── parking.html
 │   ├── profile.html
 │   └── vehicle.html
 │
+├── css/
+│   ├── admin.css
+│   ├── base.css
+│   ├── chat.css
+│   ├── dashboard.css
+│   ├── login.css
+│   └── vehicle.css
+│
+├── js/
+│   ├── admin_chat.js
+│   ├── admin_rules.js
+│   ├── chat.js
+│   ├── dashboard.js
+│   ├── login.js
+│   ├── recover.js
+│   ├── register.js
+│   ├── update_password.js
+│   └── supabase.js
+│
 ├── index.html
 ├── new_account.html
-├── script.js
+├── recover.html
+├── update_password.html
 ├── styles.css
 └── README.md
 ```
@@ -99,43 +121,38 @@ Cuando se registra un administrador, se solicita una clave especial de administr
 
 ---
 
-### `script.js`
+### `recover.html` y `update_password.html`
 
-Archivo principal de lógica del sistema. Contiene:
-
-* Conexión a Supabase.
-* Inicio de sesión.
-* Registro de usuarios.
-* Validación de rol.
-* Redirección de cliente o administrador.
-* Carga de datos del usuario.
-* Gestión de perfil.
-* Subida de foto de perfil.
-* Gestión de vehículo.
-* Reserva y liberación de espacios.
-* Registro de historial.
-* Panel administrador.
-* Gestión de clientes.
-* Gestión de vehículos.
-* Gestión de espacios.
-* Historial general.
+Páginas dedicadas al flujo completo de recuperación de contraseña y actualización segura conectadas con Supabase Auth.
 
 ---
 
-### `styles.css`
+### Carpeta `js/` (Modularización de Lógica JavaScript)
 
-Archivo principal de estilos. Contiene el diseño visual de:
+La lógica del sistema ha sido separada en scripts especializados dentro de la carpeta `js/`:
 
-* Login.
+* **`supabase.js`**: Contiene la inicialización del cliente de Supabase (`supabaseClient`) utilizando la URL y la llave anónima del proyecto.
+* **`login.js`**: Maneja el evento de inicio de sesión, la validación de credenciales, el control de cuentas inactivas y la redirección según el rol del usuario (`cliente` o `administrador`).
+* **`register.js`**: Controla el registro de nuevos usuarios y la validación de claves administrativas.
+* **`recover.js` y `update_password.js`**: Gestionan el envío del correo de recuperación y la actualización segura de la contraseña mediante Supabase Auth.
+* **`dashboard.js`**, **`chat.js`**, **`admin_chat.js`**, **`admin_rules.js`**: Controlan el comportamiento interactivo de los paneles de control, la mensajería y la aceptación de normativas del sistema.
+
+---
+
+### `styles.css` y Carpeta `css/` (Modularización de Estilos)
+
+Archivo principal de estilos que unifica mediante la regla `@import` todos los módulos visuales distribuidos en la carpeta `css/`. Contiene la referencia al diseño visual de:
+
+* Login y recuperación (`login.css`).
 * Registro.
-* Dashboard cliente.
-* Perfil.
-* Vehículo.
-* Espacios.
+* Dashboard cliente y perfil (`dashboard.css`).
+* Vehículo (`vehicle.css`).
+* Espacios del estacionamiento.
 * Historial.
-* Panel administrador.
-* Tablas del administrador.
-* Diseño responsive.
+* Panel administrador y tablas (`admin.css`).
+* Interfaz de mensajería y soporte (`chat.css`).
+* Estilos base y reseteo (`base.css`).
+* Diseño responsive para todas las vistas.
 
 ---
 
@@ -143,8 +160,9 @@ Archivo principal de estilos. Contiene el diseño visual de:
 
 La carpeta `cliente/` contiene las páginas que usa el cliente después de iniciar sesión.
 
-## `cliente/dashboard.html`
+---
 
+## `cliente/dashboard.html`
 Panel principal del cliente. Muestra:
 
 * Nombre del cliente.
@@ -229,6 +247,12 @@ Página de historial personal del cliente. Muestra:
 * Estado.
 
 El cliente solo puede ver su propio historial.
+
+---
+
+
+## `cliente/chat.html`
+Apartado de comunicación y soporte para el usuario.
 
 ---
 
@@ -385,7 +409,7 @@ El administrador puede:
 * Autorizar o no autorizar vehículos.
 * Ver espacios libres y ocupados.
 * Liberar espacios.
-* Ver historial general.
+* Ver historial general y atender chats de soporte.
 
 ---
 
