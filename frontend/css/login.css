@@ -298,3 +298,20 @@
 .register-card .login-subtitle {
   margin-bottom: 22px;
 }
+
+/* CENTRADO PARA LA VISTA DE RECUPERAR CONTRASEÑA */
+.recover-body {
+  min-height: 100vh;
+  background: #0f172a; /* Fondo oscuro general */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.recover-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
