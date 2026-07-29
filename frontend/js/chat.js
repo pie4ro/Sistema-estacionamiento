@@ -1,97 +1,57 @@
-const SUPABASE_URL = "https://wmguxwalpztndjlsyvoz.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtZ3V4d2FscHp0bmRqbHN5dm96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2NjIwMDUsImV4cCI6MjA5NzIzODAwNX0.46qtK6XRESj0I5DX_eVrUaDOQEOA9lT-mQrEheqgcbY";
-
-const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-);
-
 let usuarioActual = null;
 let usuarioSeleccionado = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-
     iniciarChat();
-
 });
 
-async function iniciarChat(){
+async function iniciarChat() {
 
-    const {data} = await supabaseClient.auth.getUser();
+    const { data } = await supabaseClient.auth.getUser();
 
-    if(!data.user){
-
-        window.location.href="../index.html";
+    if (!data.user) {
+        window.location.href = "../index.html";
         return;
-
     }
 
-    usuarioActual=data.user;
+    usuarioActual = data.user;
 
     cargarUsuarios();
 
 }
 
-async function iniciarChat(){
+async function cargarUsuarios() {
 
-    const {data} = await supabaseClient.auth.getUser();
+    const lista = document.getElementById("listaUsuarios");
 
-    if(!data.user){
+    if (!lista) return;
 
-        window.location.href="../index.html";
-        return;
+    const { data: usuarios, error } = await supabaseClient
+        .from("clientes")
+        .select("id,nombre_completo,foto_url")
+        .eq("rol", "cliente")
+        .neq("id", usuarioActual.id)
+        .order("nombre_completo");
 
-    }
-
-    usuarioActual=data.user;
-
-    cargarUsuarios();
-
-}
-
-async function cargarUsuarios(){
-
-    const lista=document.getElementById("listaUsuarios");
-
-    if(!lista) return;
-
-    const {data:usuarios,error}=await supabaseClient
-
-    .from("clientes")
-
-    .select("id,nombre_completo,foto_url")
-
-    .eq("rol","cliente")
-
-    .neq("id",usuarioActual.id)
-
-    .order("nombre_completo");
-
-    if(error){
-
+    if (error) {
         console.log(error);
-
         return;
-
     }
 
-    lista.innerHTML="";
+    lista.innerHTML = "";
 
-    usuarios.forEach(usuario=>{
+    usuarios.forEach(usuario => {
 
-        const div=document.createElement("div");
+        const div = document.createElement("div");
 
-        div.className="usuario-chat";
+        div.className = "usuario-chat";
 
-        div.innerHTML=`
-
-        <img src="${usuario.foto_url || 'https://cdn-icons-png.flaticon.com/512/847/847969.png'}">
-
-        <span>${usuario.nombre_completo}</span>
-
+        div.innerHTML = `
+            <img src="${usuario.foto_url || "https://cdn-icons-png.flaticon.com/512/847/847969.png"}">
+            <span>${usuario.nombre_completo}</span>
         `;
 
-        div.onclick=()=>abrirChat(usuario);
+        div.onclick = () => abrirChat(usuario);
 
         lista.appendChild(div);
 
@@ -99,138 +59,76 @@ async function cargarUsuarios(){
 
 }
 
-async function abrirChat(usuario){
+async function abrirChat(usuario) {
 
-    usuarioSeleccionado=usuario;
+    usuarioSeleccionado = usuario;
 
-    document.getElementById("chatHeader").innerHTML=
-
-    `<h2>${usuario.nombre_completo}</h2>`;
+    document.getElementById("chatHeader").innerHTML =
+        `<h2>${usuario.nombre_completo}</h2>`;
 
     cargarMensajes();
 
 }
 
-async function cargarMensajes(){
+async function cargarMensajes() {
 
-    if(!usuarioSeleccionado) return;
+    if (!usuarioSeleccionado) return;
 
-    const {data}=await supabaseClient
+    const { data } = await supabaseClient
+        .from("mensajes")
+        .select("*")
+        .or(
+            `and(emisor.eq.${usuarioActual.id},receptor.eq.${usuarioSeleccionado.id}),and(emisor.eq.${usuarioSeleccionado.id},receptor.eq.${usuarioActual.id})`
+        )
+        .order("created_at");
 
-    .from("mensajes")
+    const contenedor = document.getElementById("mensajes");
 
-    .select("*")
+    contenedor.innerHTML = "";
 
-    .or(
+    data.forEach(m => {
 
-`and(emisor.eq.${usuarioActual.id},receptor.eq.${usuarioSeleccionado.id}),
-and(emisor.eq.${usuarioSeleccionado.id},receptor.eq.${usuarioActual.id})`
+        const div = document.createElement("div");
 
-)
+        div.className =
+            m.emisor === usuarioActual.id
+                ? "mensaje-propio"
+                : "mensaje-ajeno";
 
-.order("created_at");
+        div.innerHTML = `
+            ${m.mensaje}
+        `;
 
-const contenedor=document.getElementById("mensajes");
+        contenedor.appendChild(div);
 
-contenedor.innerHTML="";
+    });
 
-data.forEach(m=>{
-
-const div=document.createElement("div");
-
-div.className=
-
-m.emisor===usuarioActual.id
-
-?
-
-"mensaje-propio"
-
-:
-
-"mensaje-ajeno";
-
-div.innerHTML=`
-
-${m.mensaje}
-
-`;
-
-contenedor.appendChild(div);
-
-});
-
-contenedor.scrollTop=contenedor.scrollHeight;
+    contenedor.scrollTop = contenedor.scrollHeight;
 
 }
 
 document
+    .getElementById("btnEnviar")
+    .addEventListener("click", enviarMensaje);
 
-.getElementById("btnEnviar")
+async function enviarMensaje() {
 
-.addEventListener("click",enviarMensaje);
+    if (!usuarioSeleccionado) return;
 
-async function enviarMensaje(){
+    const input = document.getElementById("txtMensaje");
 
-if(!usuarioSeleccionado) return;
+    const texto = input.value.trim();
 
-const input=document.getElementById("txtMensaje");
+    if (texto === "") return;
 
-const texto=input.value.trim();
+    await supabaseClient
+        .from("mensajes")
+        .insert({
+            emisor: usuarioActual.id,
+            receptor: usuarioSeleccionado.id,
+            mensaje: texto
+        });
 
-if(texto=="") return;
-
-await supabaseClient
-
-.from("mensajes")
-
-.insert({
-
-emisor:usuarioActual.id,
-
-receptor:usuarioSeleccionado.id,
-
-mensaje:texto
-
-});
-
-input.value="";
+    input.value = "";
 
 }
-
-document
-
-.getElementById("btnEnviar")
-
-.addEventListener("click",enviarMensaje);
-
-async function enviarMensaje(){
-
-if(!usuarioSeleccionado) return;
-
-const input=document.getElementById("txtMensaje");
-
-const texto=input.value.trim();
-
-if(texto=="") return;
-
-await supabaseClient
-
-.from("mensajes")
-
-.insert({
-
-emisor:usuarioActual.id,
-
-receptor:usuarioSeleccionado.id,
-
-mensaje:texto
-
-});
-
-input.value="";
-
-}
-
-
-

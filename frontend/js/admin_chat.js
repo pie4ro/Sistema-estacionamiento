@@ -16,7 +16,7 @@ async function iniciarChatAdmin() {
 
     adminActual = data.user;
 
-    verificarAdministrador();
+    await verificarAdministrador();
 
 }
 
@@ -28,7 +28,7 @@ async function verificarAdministrador() {
         .eq("id", adminActual.id)
         .single();
 
-    if (error || data.rol !== "administrador") {
+    if (error || !data || data.rol !== "administrador") {
         alert("Acceso denegado");
         window.location.href = "../index.html";
         return;
@@ -41,6 +41,8 @@ async function verificarAdministrador() {
 async function cargarClientes() {
 
     const lista = document.getElementById("listaClientesChat");
+
+    if (!lista) return;
 
     const { data, error } = await supabaseClient
         .from("clientes")
@@ -55,11 +57,12 @@ async function cargarClientes() {
 
     lista.innerHTML = "";
 
+    const clienteGuardado = localStorage.getItem("chatCliente");
+
     data.forEach(cliente => {
 
-        const foto = cliente.foto_url
-            ? cliente.foto_url
-            : "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+        const foto = cliente.foto_url ||
+            "https://cdn-icons-png.flaticon.com/512/847/847969.png";
 
         const div = document.createElement("div");
 
@@ -70,9 +73,16 @@ async function cargarClientes() {
             <span>${cliente.nombre_completo}</span>
         `;
 
-        div.onclick = () => abrirChat(cliente);
+        div.addEventListener("click", () => {
+            localStorage.setItem("chatCliente", cliente.id);
+            abrirChat(cliente);
+        });
 
         lista.appendChild(div);
+
+        if (clienteGuardado && cliente.id === clienteGuardado) {
+            abrirChat(cliente);
+        }
 
     });
 
@@ -112,6 +122,8 @@ async function cargarMensajes() {
 
     const contenedor = document.getElementById("mensajes");
 
+    if (!contenedor) return;
+
     contenedor.innerHTML = "";
 
     data.forEach(mensaje => {
@@ -144,6 +156,8 @@ async function enviarMensaje() {
     }
 
     const input = document.getElementById("txtMensaje");
+
+    if (!input) return;
 
     const texto = input.value.trim();
 
@@ -198,10 +212,3 @@ supabaseClient
         }
     )
     .subscribe();
-
-const clienteSeleccionado = localStorage.getItem("chatCliente");
-if (clienteSeleccionado) {
-
-    abrirConversacion(clienteSeleccionado);
-
-}
