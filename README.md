@@ -497,7 +497,7 @@ El proyecto utiliza Supabase para:
 
 # Conexión a Supabase
 
-En el archivo `script.js` se configura la conexión con Supabase:
+En el archivo js/supabase.js se configura la conexión con Supabase:
 
 ```js
 const SUPABASE_URL = "https://wmguxwalpztndjlsyvoz.supabase.co";
