@@ -902,6 +902,54 @@ with check (public.es_admin());
 ```
 
 ---
+# Tabla `mensajes`
+
+Esta tabla crea una estructura relacional limpia y segura para almacenar el chat privado entre usuarios. Relaciona directamente las columnas emisor y receptor con los IDs de autenticación de Supabase (auth.users), asegurando que si un usuario es eliminado de la plataforma, sus mensajes asociados se limpien automáticamente (on delete cascade). Además, incluye un campo lógico leido y una marca de tiempo automática (created_at).
+
+```sql
+create table if not exists mensajes (
+    id bigint generated always as identity primary key,
+    emisor uuid not null references auth.users(id) on delete cascade,
+    receptor uuid not null references auth.users(id) on delete cascade,
+    mensaje text not null,
+    leido boolean default false,
+    created_at timestamp default now()
+);
+```
+---
+# Políticas de Seguridad (RLS) para la tabla `mensajes`
+- Aplica las reglas estrictas de seguridad Row Level Security (RLS). Garantiza que nadie más pueda espiar conversaciones ajenas:
+- Solo puedes leer los mensajes si eres quien los envió (emisor) o quien los recibió (receptor).
+- Solo puedes enviar mensajes firmados con tu propia sesión de usuario (auth.uid() = emisor).
+- Solo el receptor del mensaje tiene permiso para actualizar el estado del mensaje a "leído".
+
+```sql
+alter table mensajes enable row level security;
+
+create policy "Usuarios pueden ver sus mensajes"
+on mensajes for select to authenticated
+using (auth.uid() = emisor OR auth.uid() = receptor);
+
+create policy "Usuarios pueden enviar mensajes"
+on mensajes for insert to authenticated
+with check (auth.uid() = emisor);
+
+create policy "Usuarios pueden marcar como leído"
+on mensajes for update to authenticated
+using (auth.uid() = receptor)
+with check (auth.uid() = receptor);
+```
+
+---
+# Modificación del estado administrativo `estado_admin`
+Modifica la tabla principal de clientes para establecer un valor por defecto predeterminado `'Desactivado'` en la columna orientada a la administración. Esto es excelente para mantener la consistencia al momento de registrar nuevas cuentas o perfiles dentro de tu panel de control
+
+```sql
+ALTER TABLE clientes
+ALTER COLUMN estado_admin
+SET DEFAULT 'Desactivado';
+```
+---
 
 # Flujo del sistema
 

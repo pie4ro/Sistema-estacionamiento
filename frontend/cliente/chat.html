@@ -1,135 +1,57 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>ParkAccess | Chat</title>
-
     <link rel="stylesheet" href="../styles.css">
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 </head>
-
 <body class="dashboard-page">
 
 <div class="dashboard-layout">
-
-    <!-- SIDEBAR -->
-
     <aside class="sidebar">
-
     </aside>
 
-    <!-- CONTENIDO -->
-
-    <main class="dashboard-content">
-
-        <div class="dashboard-header">
-
+    <main class="dashboard-main">
+        <div class="dashboard-top">
             <div>
-
-                <p>
-                    Conversa con otros clientes registrados.
-                </p>
-
+                <h2>Chat de usuario</h2>
+                <p>Conversa con otros clientes registrados en el sistema.</p>
             </div>
-
+            <a href="dashboard.html" class="back-btn">Volver al panel</a>
         </div>
 
-
-        <div class="chat-container">
-
-            <!-- LISTA DE USUARIOS -->
-
+        <div class="chat-container" style="transform: none; margin: 0; width: 100%; max-width: 100%; height: 700px;">
             <div class="chat-users">
-
                 <h2>Clientes</h2>
-
                 <div id="listaUsuarios">
-
-                    <!-- chat.js -->
-
-                </div>
-
+                    </div>
             </div>
-
-
-            <!-- PANEL DEL CHAT -->
 
             <div class="chat-box">
-
-                <!-- CABECERA -->
-
                 <div class="chat-header">
-
-                    <img
-                        id="chatFoto"
-                        src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
-                        alt="Foto">
-
+                    <img id="chatFoto" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Foto">
                     <div>
-
-                        <h2 id="chatNombre">
-
-                            Selecciona un cliente
-
-                        </h2>
-
-                        <small id="chatEstado">
-
-                            Sin conversación iniciada
-
-                        </small>
-
+                        <h2 id="chatNombre">Selecciona un cliente</h2>
+                        <small id="chatEstado">Sin conversación iniciada</small>
                     </div>
-
                 </div>
 
-
-                <!-- MENSAJES -->
-
-                <div
-                    id="mensajes"
-                    class="mensajes">
-
+                <div id="mensajes" class="mensajes">
                 </div>
-
-
-                <!-- ESCRIBIR MENSAJE -->
 
                 <div class="chat-input">
-
-                    <input
-                        id="txtMensaje"
-                        type="text"
-                        placeholder="Escribe un mensaje...">
-
-                    <button id="btnEnviar">
-
-                        Eniar
-
-                    </button>
-
+                    <input id="txtMensaje" type="text" placeholder="Escribe un mensaje...">
+                    <button id="btnEnviar">Enviar</button>
                 </div>
-
             </div>
-
         </div>
-
     </main>
-
 </div>
 
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="../js/supabase.js"></script>
 <script src="../js/chat.js"></script>
-
 </body>
-
 </html>
