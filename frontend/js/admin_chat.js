@@ -95,7 +95,7 @@ async function cargarClientesAdmin() {
     renderizarListaClientes(todosLosClientes);
 }
 
-function renderizarListaClientes(usuarios) {
+async function renderizarListaClientes(usuarios) {
     const lista = document.getElementById("listaClientesChat");
     if (!lista) return;
 
@@ -106,6 +106,21 @@ function renderizarListaClientes(usuarios) {
         return;
     }
 
+    // Obtener los mensajes no leídos dirigidos al administrador actual
+    const { data: mensajesNoLeidos } = await supabaseClient
+        .from("mensajes")
+        .select("emisor")
+        .eq("receptor", adminActual.id)
+        .eq("leido", false);
+
+    // Contar cuántos mensajes sin leer tiene cada cliente
+    const conteoNoLeidos = {};
+    if (mensajesNoLeidos) {
+        mensajesNoLeidos.forEach(m => {
+            conteoNoLeidos[m.emisor] = (conteoNoLeidos[m.emisor] || 0) + 1;
+        });
+    }
+
     usuarios.forEach(usuario => {
         const div = document.createElement("div");
         div.className = "chat-user";
@@ -114,10 +129,15 @@ function renderizarListaClientes(usuarios) {
         const ahora = new Date();
         const estaEnLinea = ultimaConexion && (ahora - ultimaConexion < 120000);
 
+        // Ver si este usuario tiene mensajes pendientes
+        const tieneNuevos = conteoNoLeidos[usuario.id] > 0;
+
         div.innerHTML = `
             <div style="position: relative; display: flex; align-items: center;">
                 <img src="${usuario.foto_url || "https://cdn-icons-png.flaticon.com/512/847/847969.png"}" alt="Avatar" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
                 <span style="position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; background-color: ${estaEnLinea ? '#10b981' : '#9ca3af'}; border: 2px solid white; border-radius: 50%;"></span>
+                
+                ${tieneNuevos ? `<span style="position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; background-color: #3b82f6; border: 2px solid white; border-radius: 50%;"></span>` : ''}
             </div>
             <div style="overflow: hidden; flex: 1; margin-left: 10px;">
                 <span style="font-weight: 600; display: block; font-size: 14px; color: #111827; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">${usuario.nombre_completo || "Sin nombre"}</span>

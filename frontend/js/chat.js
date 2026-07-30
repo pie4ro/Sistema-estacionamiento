@@ -48,10 +48,24 @@ async function cargarUsuarios() {
         return;
     }
 
+    // Obtener los mensajes no leídos dirigidos al usuario actual
+    const { data: mensajesNoLeidos } = await supabaseClient
+        .from("mensajes")
+        .select("emisor")
+        .eq("receptor", usuarioActual.id)
+        .eq("leido", false);
+
+    const conteoNoLeidos = {};
+    if (mensajesNoLeidos) {
+        mensajesNoLeidos.forEach(m => {
+            conteoNoLeidos[m.emisor] = (conteoNoLeidos[m.emisor] || 0) + 1;
+        });
+    }
+
     lista.innerHTML = "";
 
     if (!usuarios || usuarios.length === 0) {
-        lista.innerHTML = `<p style="padding: 10px; color: #6b7280; font-size: 14px;">No hay otros clientes registrados.</p>`;
+        lista.innerHTML = `<p style="padding: 10px; color: #6b7280; font-size: 14px;">No hay otros usuarios registrados.</p>`;
         return;
     }
 
@@ -63,12 +77,18 @@ async function cargarUsuarios() {
         const ahora = new Date();
         const estaEnLinea = ultimaConexion && (ahora - ultimaConexion < 120000); // 2 minutos
 
+        // Verificar si este usuario tiene mensajes pendientes para mostrar la burbuja azul
+        const tieneNuevos = conteoNoLeidos[usuario.id] > 0;
+
         div.innerHTML = `
-            <div style="position: relative;">
-                <img src="${usuario.foto_url || "https://cdn-icons-png.flaticon.com/512/847/847969.png"}" alt="Avatar">
-                <span style="position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; background-color: ${estaEnLinea ? '#10b981' : '#9ca3af'}; border: 2px solid white; border-radius: 50%;"></span>
+            <div style="position: relative; display: flex; align-items: center;">
+                <img src="${usuario.foto_url || "https://cdn-icons-png.flaticon.com/512/847/847969.png"}" alt="Avatar" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
+                
+                <span style="position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; background-color: ${estaEnLinea ? '#10b981' : '#9ca3af'}; border: 2px solid white; border-radius: 50%;"></span>
+                
+                ${tieneNuevos ? `<span style="position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; background-color: #3b82f6; border: 2px solid white; border-radius: 50%;"></span>` : ''}
             </div>
-            <div style="overflow: hidden; flex: 1;">
+            <div style="overflow: hidden; flex: 1; margin-left: 10px;">
                 <span style="font-weight: 600; display: block; font-size: 14px; color: #111827; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">${usuario.nombre_completo || "Sin nombre"}</span>
                 <small style="color: ${estaEnLinea ? '#059669' : '#6b7280'}; font-size: 11px;">
                     ${estaEnLinea ? 'En línea' : 'Desconectado'}
@@ -90,6 +110,11 @@ function suscripcionRealtimeMensajes() {
     supabaseClient
         .channel('public:mensajes')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensajes' }, payload => {
+            // Si el mensaje viene dirigido a mí, recargamos la lista para que aparezca la burbuja azul al instante
+            if (payload.new.receptor === usuarioActual.id) {
+                cargarUsuarios();
+            }
+
             if (usuarioSeleccionado && (payload.new.emisor === usuarioSeleccionado.id || payload.new.receptor === usuarioSeleccionado.id)) {
                 cargarMensajes();
             }
@@ -151,13 +176,16 @@ async function cargarMensajes() {
 
     contenedor.scrollTop = contenedor.scrollHeight;
 
-    // Marcar como leídos los mensajes que este usuario recibió de la persona seleccionada
+    // Marcar automáticamente como leídos los mensajes de este usuario al abrir el chat
     await supabaseClient
         .from("mensajes")
         .update({ leido: true })
         .eq("emisor", usuarioSeleccionado.id)
         .eq("receptor", usuarioActual.id)
         .eq("leido", false);
+
+    // Actualizar la lista lateral para quitar la burbuja azul de inmediato
+    cargarUsuarios();
 }
 
 const btnEnviar = document.getElementById("btnEnviar");
