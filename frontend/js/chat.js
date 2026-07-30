@@ -139,7 +139,11 @@ async function abrirChat(usuario) {
         chatEstado.textContent = estaEnLinea ? "En línea" : "Desconectado";
         chatEstado.style.color = estaEnLinea ? "#059669" : "#6b7280";
     }
-    if (chatFoto && usuario.foto_url) chatFoto.src = usuario.foto_url;
+
+    // CORRECCIÓN AQUÍ: Forzar la imagen por defecto si el usuario no tiene foto_url
+    if (chatFoto) {
+        chatFoto.src = usuario.foto_url || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+    }
 
     cargarMensajes();
 }
