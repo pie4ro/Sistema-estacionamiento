@@ -951,6 +951,19 @@ SET DEFAULT 'Desactivado';
 ```
 ---
 
+# Usuarios lean perfiles de otros clientes
+
+```sql
+drop policy if exists "Usuarios pueden ver perfiles de otros clientes" on clientes;
+
+create policy "Usuarios pueden ver perfiles de otros clientes"
+on clientes
+for select
+to authenticated
+using (true);
+```
+---
+
 # Flujo del sistema
 
 ## Registro de cliente
