@@ -14,17 +14,32 @@ async function iniciarChat() {
     }
 
     usuarioActual = data.user;
+
+    // Actualizar estado "en línea" al entrar al chat
+    await actualizarUltimaConexion();
+
+    // Actualizar cada 60 segundos para mantener el estado activo
+    setInterval(actualizarUltimaConexion, 60000);
+
     await cargarUsuarios();
+    suscripcionRealtimeMensajes();
+}
+
+async function actualizarUltimaConexion() {
+    if (!usuarioActual) return;
+    await supabaseClient
+        .from("clientes")
+        .update({ ultima_conexion: new Date() })
+        .eq("id", usuarioActual.id);
 }
 
 async function cargarUsuarios() {
     const lista = document.getElementById("listaUsuarios");
     if (!lista) return;
 
-    // Consultamos los clientes excluyendo al usuario logueado actual
     const { data: usuarios, error } = await supabaseClient
         .from("clientes")
-        .select("id, nombre_completo, foto_url, rol")
+        .select("id, nombre_completo, foto_url, rol, ultima_conexion")
         .neq("id", usuarioActual.id)
         .order("nombre_completo", { ascending: true });
 
@@ -42,19 +57,27 @@ async function cargarUsuarios() {
 
     usuarios.forEach(usuario => {
         const div = document.createElement("div");
-        // Cambiado a "chat-user" para que coincida perfectamente con el chat.css
         div.className = "chat-user";
 
+        // Lógica para calcular si está en línea (por ejemplo, si se conectó en los últimos 2 minutos)
+        const ultimaConexion = usuario.ultima_conexion ? new Date(usuario.ultima_conexion) : null;
+        const ahora = new Date();
+        const estaEnLinea = ultimaConexion && (ahora - ultimaConexion < 120000); // 2 minutos
+
         div.innerHTML = `
-            <img src="${usuario.foto_url || "https://cdn-icons-png.flaticon.com/512/847/847969.png"}" alt="Avatar">
-            <div style="overflow: hidden;">
+            <div style="position: relative;">
+                <img src="${usuario.foto_url || "https://cdn-icons-png.flaticon.com/512/847/847969.png"}" alt="Avatar">
+                <span style="position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; background-color: ${estaEnLinea ? '#10b981' : '#9ca3af'}; border: 2px solid white; border-radius: 50%;"></span>
+            </div>
+            <div style="overflow: hidden; flex: 1;">
                 <span style="font-weight: 600; display: block; font-size: 14px; color: #111827; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">${usuario.nombre_completo || "Sin nombre"}</span>
-                <small style="color: #6b7280; font-size: 12px; text-transform: capitalize;">${usuario.rol || 'cliente'}</small>
+                <small style="color: ${estaEnLinea ? '#059669' : '#6b7280'}; font-size: 11px;">
+                    ${estaEnLinea ? 'En línea' : 'Desconectado'}
+                </small>
             </div>
         `;
 
         div.onclick = () => {
-            // Remover la clase active de todos y ponérsela al seleccionado
             document.querySelectorAll(".chat-user").forEach(el => el.classList.remove("active"));
             div.classList.add("active");
             abrirChat(usuario);
@@ -62,6 +85,18 @@ async function cargarUsuarios() {
 
         lista.appendChild(div);
     });
+}
+
+function suscripcionRealtimeMensajes() {
+    // Escuchar nuevos mensajes en tiempo real para actualizar la pantalla automáticamente
+    supabaseClient
+        .channel('public:mensajes')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensajes' }, payload => {
+            if (usuarioSeleccionado && (payload.new.emisor === usuarioSeleccionado.id || payload.new.receptor === usuarioSeleccionado.id)) {
+                cargarMensajes();
+            }
+        })
+        .subscribe();
 }
 
 async function abrirChat(usuario) {
@@ -72,7 +107,16 @@ async function abrirChat(usuario) {
     const chatFoto = document.getElementById("chatFoto");
 
     if (chatNombre) chatNombre.textContent = usuario.nombre_completo;
-    if (chatEstado) chatEstado.textContent = "En línea";
+    
+    const ultimaConexion = usuario.ultima_conexion ? new Date(usuario.ultima_conexion) : null;
+    const ahora = new Date();
+    const estaEnLinea = ultimaConexion && (ahora - ultimaConexion < 120000);
+
+    if (chatEstado) {
+        chatEstado.textContent = estaEnLinea ? "En línea" : "Desconectado";
+        chatEstado.style.color = estaEnLinea ? "#059669" : "#6b7280";
+    }
+
     if (chatFoto && usuario.foto_url) chatFoto.src = usuario.foto_url;
 
     cargarMensajes();
@@ -102,7 +146,6 @@ async function cargarMensajes() {
     if (data) {
         data.forEach(m => {
             const div = document.createElement("div");
-            // Coincide con las clases msg-right y msg-left de tu chat.css
             div.className = m.emisor === usuarioActual.id ? "msg-right" : "msg-left";
             div.textContent = m.mensaje;
             contenedor.appendChild(div);

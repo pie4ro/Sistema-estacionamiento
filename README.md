@@ -964,6 +964,14 @@ using (true);
 ```
 ---
 
+# Actividad en Supabase (SQL)
+```sql
+ALTER TABLE clientes 
+ADD COLUMN IF NOT EXISTS ultima_conexion timestamp default now();
+```
+---
+
+
 # Flujo del sistema
 
 ## Registro de cliente
