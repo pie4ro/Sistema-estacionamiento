@@ -1,12 +1,12 @@
 let adminActual = null;
 let clienteSeleccionado = null;
+let todosLosClientes = [];
 
 document.addEventListener("DOMContentLoaded", () => {
-    iniciarChatAdmin();
+    iniciarAdminChat();
 });
 
-async function iniciarChatAdmin() {
-
+async function iniciarAdminChat() {
     const { data, error } = await supabaseClient.auth.getUser();
 
     if (error || !data.user) {
@@ -16,96 +16,140 @@ async function iniciarChatAdmin() {
 
     adminActual = data.user;
 
-    await verificarAdministrador();
+    await actualizarUltimaConexionAdmin();
+    setInterval(actualizarUltimaConexionAdmin, 60000);
 
-}
+    await cargarClientesAdmin();
+    suscripcionRealtimeMensajesAdmin();
 
-async function verificarAdministrador() {
-
-    const { data, error } = await supabaseClient
-        .from("clientes")
-        .select("rol")
-        .eq("id", adminActual.id)
-        .single();
-
-    if (error || !data || data.rol !== "administrador") {
-        alert("Acceso denegado");
-        window.location.href = "../index.html";
-        return;
+    // Configurar buscador en tiempo real
+    const inputBuscar = document.getElementById("buscarClienteChat");
+    if (inputBuscar) {
+        inputBuscar.addEventListener("input", (e) => {
+            const texto = e.target.value.toLowerCase();
+            const clientesFiltrados = todosLosClientes.filter(c => 
+                (c.nombre_completo && c.nombre_completo.toLowerCase().includes(texto)) ||
+                (c.correo && c.correo.toLowerCase().includes(texto))
+            );
+            renderizarListaClientes(clientesFiltrados);
+        });
     }
 
-    cargarClientes();
+    const btnEnviar = document.getElementById("btnEnviarAdmin");
+    if (btnEnviar) {
+        btnEnviar.addEventListener("click", enviarMensajeAdmin);
+    }
 
+    const txtMensaje = document.getElementById("txtMensajeAdmin");
+    if (txtMensaje) {
+        txtMensaje.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                enviarMensajeAdmin();
+            }
+        });
+    }
 }
 
-async function cargarClientes() {
-
-    const lista = document.getElementById("listaClientesChat");
-
-    if (!lista) return;
-
-    const { data, error } = await supabaseClient
+async function actualizarUltimaConexionAdmin() {
+    if (!adminActual) return;
+    await supabaseClient
         .from("clientes")
-        .select("id,nombre_completo,foto_url")
-        .eq("rol", "cliente")
-        .order("nombre_completo");
+        .update({ ultima_conexion: new Date() })
+        .eq("id", adminActual.id);
+}
+
+async function cargarClientesAdmin() {
+    const { data: usuarios, error } = await supabaseClient
+        .from("clientes")
+        .select("id, nombre_completo, foto_url, rol, ultima_conexion, correo")
+        .neq("id", adminActual.id)
+        .order("nombre_completo", { ascending: true });
 
     if (error) {
-        console.log(error);
+        console.error("Error al cargar clientes:", error);
         return;
     }
+
+    todosLosClientes = usuarios || [];
+    renderizarListaClientes(todosLosClientes);
+}
+
+function renderizarListaClientes(usuarios) {
+    const lista = document.getElementById("listaClientesChat");
+    if (!lista) return;
 
     lista.innerHTML = "";
 
-    const clienteGuardado = localStorage.getItem("chatCliente");
+    if (!usuarios || usuarios.length === 0) {
+        lista.innerHTML = `<p style="padding: 15px; color: #9ca3af; font-size: 13px; text-align: center;">No se encontraron clientes.</p>`;
+        return;
+    }
 
-    data.forEach(cliente => {
-
-        const foto = cliente.foto_url ||
-            "https://cdn-icons-png.flaticon.com/512/847/847969.png";
-
+    usuarios.forEach(usuario => {
         const div = document.createElement("div");
+        div.className = "chat-user";
 
-        div.className = "usuario-chat";
+        const ultimaConexion = usuario.ultima_conexion ? new Date(usuario.ultima_conexion) : null;
+        const ahora = new Date();
+        const estaEnLinea = ultimaConexion && (ahora - ultimaConexion < 120000);
 
         div.innerHTML = `
-            <img src="${foto}" class="chat-avatar">
-            <span>${cliente.nombre_completo}</span>
+            <div style="position: relative; display: flex; align-items: center;">
+                <img src="${usuario.foto_url || "https://cdn-icons-png.flaticon.com/512/847/847969.png"}" alt="Avatar" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
+                <span style="position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; background-color: ${estaEnLinea ? '#10b981' : '#9ca3af'}; border: 2px solid white; border-radius: 50%;"></span>
+            </div>
+            <div style="overflow: hidden; flex: 1; margin-left: 10px;">
+                <span style="font-weight: 600; display: block; font-size: 14px; color: #111827; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">${usuario.nombre_completo || "Sin nombre"}</span>
+                <small style="color: ${estaEnLinea ? '#059669' : '#6b7280'}; font-size: 11px;">
+                    ${estaEnLinea ? 'En línea' : 'Desconectado'}
+                </small>
+            </div>
         `;
 
-        div.addEventListener("click", () => {
-            localStorage.setItem("chatCliente", cliente.id);
-            abrirChat(cliente);
-        });
+        div.onclick = () => {
+            document.querySelectorAll(".chat-user").forEach(el => el.classList.remove("active"));
+            div.classList.add("active");
+            abrirChatAdmin(usuario);
+        };
 
         lista.appendChild(div);
-
-        if (clienteGuardado && cliente.id === clienteGuardado) {
-            abrirChat(cliente);
-        }
-
     });
-
 }
 
-async function abrirChat(cliente) {
-
-    clienteSeleccionado = cliente;
-
-    document.getElementById("chatNombre").textContent =
-        cliente.nombre_completo;
-
-    document.getElementById("chatFoto").src =
-        cliente.foto_url ||
-        "https://cdn-icons-png.flaticon.com/512/847/847969.png";
-
-    cargarMensajes();
-
+function suscripcionRealtimeMensajesAdmin() {
+    supabaseClient
+        .channel('public:mensajes_admin')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensajes' }, payload => {
+            if (clienteSeleccionado && (payload.new.emisor === clienteSeleccionado.id || payload.new.receptor === clienteSeleccionado.id)) {
+                cargarMensajesAdmin();
+            }
+        })
+        .subscribe();
 }
 
-async function cargarMensajes() {
+async function abrirChatAdmin(usuario) {
+    clienteSeleccionado = usuario;
 
-    if (!clienteSeleccionado) return;
+    const chatHeader = document.getElementById("chatHeader");
+    if (chatHeader) {
+        const ultimaConexion = usuario.ultima_conexion ? new Date(usuario.ultima_conexion) : null;
+        const ahora = new Date();
+        const estaEnLinea = ultimaConexion && (ahora - ultimaConexion < 120000);
+
+        chatHeader.innerHTML = `
+            <img src="${usuario.foto_url || "https://cdn-icons-png.flaticon.com/512/847/847969.png"}" alt="Foto" style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover;">
+            <div>
+                <h2 style="font-size: 18px; color: #111827; margin: 0;">${usuario.nombre_completo}</h2>
+                <small style="color: ${estaEnLinea ? '#059669' : '#6b7280'}; font-size: 13px;">${estaEnLinea ? 'En línea' : 'Desconectado'}</small>
+            </div>
+        `;
+    }
+
+    cargarMensajesAdmin();
+}
+
+async function cargarMensajesAdmin() {
+    if (!clienteSeleccionado || !adminActual) return;
 
     const { data, error } = await supabaseClient
         .from("mensajes")
@@ -113,54 +157,37 @@ async function cargarMensajes() {
         .or(
             `and(emisor.eq.${adminActual.id},receptor.eq.${clienteSeleccionado.id}),and(emisor.eq.${clienteSeleccionado.id},receptor.eq.${adminActual.id})`
         )
-        .order("created_at");
+        .order("created_at", { ascending: true });
 
     if (error) {
-        console.log(error);
+        console.error("Error al cargar mensajes del admin:", error);
         return;
     }
 
-    const contenedor = document.getElementById("mensajes");
-
+    const contenedor = document.getElementById("mensajesAdmin");
     if (!contenedor) return;
 
     contenedor.innerHTML = "";
 
-    data.forEach(mensaje => {
-
-        const div = document.createElement("div");
-
-        div.className =
-            mensaje.emisor === adminActual.id
-                ? "mensaje-propio"
-                : "mensaje-ajeno";
-
-        div.innerHTML = `
-            <p>${mensaje.mensaje}</p>
-            <small>${new Date(mensaje.created_at).toLocaleTimeString()}</small>
-        `;
-
-        contenedor.appendChild(div);
-
-    });
-
-    contenedor.scrollTop = contenedor.scrollHeight;
-
-}
-
-async function enviarMensaje() {
-
-    if (!clienteSeleccionado) {
-        alert("Selecciona un cliente.");
-        return;
+    if (data) {
+        data.forEach(m => {
+            const div = document.createElement("div");
+            div.className = m.emisor === adminActual.id ? "msg-right" : "msg-left";
+            div.textContent = m.mensaje;
+            contenedor.appendChild(div);
+        });
     }
 
-    const input = document.getElementById("txtMensaje");
+    contenedor.scrollTop = contenedor.scrollHeight;
+}
 
+async function enviarMensajeAdmin() {
+    if (!clienteSeleccionado || !adminActual) return;
+
+    const input = document.getElementById("txtMensajeAdmin");
     if (!input) return;
 
     const texto = input.value.trim();
-
     if (texto === "") return;
 
     const { error } = await supabaseClient
@@ -172,43 +199,10 @@ async function enviarMensaje() {
         });
 
     if (error) {
-        console.log(error);
+        console.error("Error al enviar mensaje:", error);
         return;
     }
 
     input.value = "";
-
+    cargarMensajesAdmin();
 }
-
-document
-    .getElementById("btnEnviar")
-    ?.addEventListener("click", enviarMensaje);
-
-document
-    .getElementById("txtMensaje")
-    ?.addEventListener("keypress", function (e) {
-
-        if (e.key === "Enter") {
-            enviarMensaje();
-        }
-
-    });
-
-supabaseClient
-    .channel("chat-admin")
-    .on(
-        "postgres_changes",
-        {
-            event: "INSERT",
-            schema: "public",
-            table: "mensajes"
-        },
-        () => {
-
-            if (clienteSeleccionado) {
-                cargarMensajes();
-            }
-
-        }
-    )
-    .subscribe();

@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="../styles.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body class="admin-dashboard-page">
@@ -16,68 +16,62 @@
 <div class="dashboard-layout">
 
     <!-- SIDEBAR -->
-
     <aside class="sidebar">
-
+        <!-- Tus enlaces de navegación laterales del admin -->
     </aside>
 
     <!-- CONTENIDO -->
-
     <main class="dashboard-content">
 
         <div class="dashboard-header">
-
             <div>
-
                 <h1>Centro de Mensajes</h1>
-
-                <p>
-                    Comunícate con los clientes registrados en ParkAccess.
-                </p>
-
+                <p>Comunícate con los clientes registrados en ParkAccess.</p>
             </div>
-
+            <!-- Botón de retorno unificado con el resto del sistema -->
+            <a href="admin_dashboard.html" class="back-btn">Volver al panel</a>
         </div>
 
         <div class="chat-container">
 
-            <!-- CLIENTES -->
-
+            <!-- CLIENTES (IZQUIERDA) -->
             <div class="chat-users">
-
                 <h2>Clientes</h2>
 
                 <input
                     type="text"
                     id="buscarClienteChat"
                     placeholder="Buscar cliente..."
+                    style="width: 100%; padding: 12px 16px; margin-bottom: 15px; border-radius: 14px; border: 1px solid #d1d5db; background: #f8fafc; color: #111827; font-size: 14px; outline: none; box-sizing: border-box;"
                 >
 
-                <div id="listaClientesChat">
-
+                <div id="listaClientesChat" class="chat-users-list">
+                    <!-- admin_chat.js inyectará los clientes aquí -->
                 </div>
-
             </div>
 
-            <!-- CHAT -->
-
+            <!-- CHAT (DERECHA) -->
             <div class="chat-box">
 
-                <div id="chatHeader">
-
-                    <h2>Selecciona un cliente</h2>
-
+                <!-- CABECERA DEL CHAT -->
+                <div class="chat-header" id="chatHeader">
+                    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Avatar">
+                    <div>
+                        <h2 style="margin: 0; font-size: 18px; color: #111827;">Selecciona un cliente</h2>
+                        <small style="color: #6b7280; font-size: 13px;">Sin conversación seleccionada</small>
+                    </div>
                 </div>
 
+                <!-- MENSAJES -->
                 <div
                     id="mensajesAdmin"
                     class="mensajes"
                 >
-
+                    <!-- Los mensajes se cargan aquí dinámicamente -->
                 </div>
 
+                <!-- INPUT DE MENSAJE -->
                 <div class="chat-input">
-
                     <input
                         type="text"
                         id="txtMensajeAdmin"
@@ -87,11 +81,8 @@
                     <button
                         id="btnEnviarAdmin"
                     >
-
                         Enviar
-
                     </button>
-
                 </div>
 
             </div>
@@ -103,7 +94,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="../js/supabase.js"></script>
 <script src="../js/admin_chat.js"></script>
 
