@@ -875,8 +875,7 @@ async function cargarClientesAdmin() {
       const btnChat = row.querySelector(".btn-chat");
 
       btnChat.addEventListener("click", function () {
-          localStorage.setItem("chatCliente", cliente.id);
-          window.location.href = "admin_chat.html";
+                window.location.href = `admin_chat.html?cliente_id=${cliente.id}`;
       });
 
       estadoSelect.addEventListener("change", async function () {

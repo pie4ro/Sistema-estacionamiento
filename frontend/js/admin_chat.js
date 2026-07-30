@@ -48,6 +48,27 @@ async function iniciarAdminChat() {
             }
         });
     }
+
+    // Verificar si viene un cliente seleccionado por URL desde el panel de clientes
+    const urlParams = new URLSearchParams(window.location.search);
+    const clienteIdUrl = urlParams.get('cliente_id');
+
+    if (clienteIdUrl && todosLosClientes.length > 0) {
+        const clienteEncontrado = todosLosClientes.find(c => c.id === clienteIdUrl);
+        if (clienteEncontrado) {
+            abrirChatAdmin(clienteEncontrado);
+            
+            // Resaltar visualmente al cliente en la lista lateral
+            setTimeout(() => {
+                const items = document.querySelectorAll(".chat-user");
+                items.forEach(item => {
+                    if (item.innerHTML.includes(clienteEncontrado.nombre_completo)) {
+                        item.classList.add("active");
+                    }
+                });
+            }, 100);
+        }
+    }
 }
 
 async function actualizarUltimaConexionAdmin() {
