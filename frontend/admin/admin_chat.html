@@ -11,30 +11,23 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
-<body class="admin-dashboard-page">
+<body class="dashboard-page">
 
 <div class="dashboard-layout">
 
-    <!-- SIDEBAR -->
     <aside class="sidebar">
-        <!-- Tus enlaces de navegación laterales del admin -->
-    </aside>
+        </aside>
 
-    <!-- CONTENIDO -->
-    <main class="dashboard-content">
-
-        <div class="dashboard-header">
+    <main class="dashboard-main">
+        <div class="dashboard-top">
             <div>
-                <h1>Centro de Mensajes</h1>
-                <p>Comunícate con los clientes registrados en ParkAccess.</p>
+                <h2>Chat Administrador</h2>
+                <p>Conversa con otros clientes registrados en el sistema, cualquier cosa, estarás para servir.</p>
             </div>
-            <!-- Botón de retorno unificado con el resto del sistema -->
             <a href="admin_dashboard.html" class="back-btn">Volver al panel</a>
         </div>
 
         <div class="chat-container">
-
-            <!-- CLIENTES (IZQUIERDA) -->
             <div class="chat-users">
                 <h2>Clientes</h2>
 
@@ -46,49 +39,33 @@
                 >
 
                 <div id="listaClientesChat" class="chat-users-list">
-                    <!-- admin_chat.js inyectará los clientes aquí -->
-                </div>
+                    </div>
             </div>
 
-            <!-- CHAT (DERECHA) -->
             <div class="chat-box">
-
-                <!-- CABECERA DEL CHAT -->
                 <div class="chat-header" id="chatHeader">
                     <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Avatar">
                     <div>
                         <h2 style="margin: 0; font-size: 18px; color: #111827;">Selecciona un cliente</h2>
-                        <small style="color: #6b7280; font-size: 13px;">Sin conversación seleccionada</small>
+                        <small style="color: #6b7280; font-size: 13px;">Sin conversación iniciada</small>
                     </div>
                 </div>
 
-                <!-- MENSAJES -->
-                <div
-                    id="mensajesAdmin"
-                    class="mensajes"
-                >
-                    <!-- Los mensajes se cargan aquí dinámicamente -->
-                </div>
+                <div id="mensajesAdmin" class="mensajes">
+                    </div>
 
-                <!-- INPUT DE MENSAJE -->
                 <div class="chat-input">
                     <input
                         type="text"
                         id="txtMensajeAdmin"
                         placeholder="Escribe un mensaje..."
                     >
-
-                    <button
-                        id="btnEnviarAdmin"
-                    >
+                    <button id="btnEnviarAdmin">
                         Enviar
                     </button>
                 </div>
-
             </div>
-
         </div>
-
     </main>
 
 </div>
