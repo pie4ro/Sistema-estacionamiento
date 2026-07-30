@@ -1,44 +1,23 @@
 /*=========================================
-CENTRADO Y DISEÑO MODERNO DE CHAT - PARKACCESS
+PÁGINA DE CHAT - PARKACCESS
 =========================================*/
 
-/* Contenedor general del dashboard asegurando alineación limpia */
-.dashboard-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    padding: 30px;
-    box-sizing: border-box;
-}
-
-/* Cabecera superior interna alineada al ancho del chat */
-.dashboard-top {
-    width: 100%;
-    max-width: 1150px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-}
-
-/* Contenedor principal del chat totalmente centrado */
 .chat-container {
     display: flex;
     justify-content: center;
     align-items: stretch;
     gap: 20px;
     width: 100%;
-    max-width: 1150px; /* Ancho máximo idéntico al de tus tarjetas o tablas */
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 20px auto 0;
     height: calc(100vh - 180px);
     min-height: 550px;
 }
 
 /* LISTA DE USUARIOS (IZQUIERDA) */
 .chat-users {
-    width: 320px;
-    min-width: 280px;
+    width: 340px;
+    min-width: 300px;
     background: white;
     border: 1px solid #e5e7eb;
     border-radius: 20px;
