@@ -59,7 +59,6 @@ async function cargarUsuarios() {
         const div = document.createElement("div");
         div.className = "chat-user";
 
-        // Lógica para calcular si está en línea (por ejemplo, si se conectó en los últimos 2 minutos)
         const ultimaConexion = usuario.ultima_conexion ? new Date(usuario.ultima_conexion) : null;
         const ahora = new Date();
         const estaEnLinea = ultimaConexion && (ahora - ultimaConexion < 120000); // 2 minutos
@@ -88,7 +87,6 @@ async function cargarUsuarios() {
 }
 
 function suscripcionRealtimeMensajes() {
-    // Escuchar nuevos mensajes en tiempo real para actualizar la pantalla automáticamente
     supabaseClient
         .channel('public:mensajes')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensajes' }, payload => {
@@ -116,7 +114,6 @@ async function abrirChat(usuario) {
         chatEstado.textContent = estaEnLinea ? "En línea" : "Desconectado";
         chatEstado.style.color = estaEnLinea ? "#059669" : "#6b7280";
     }
-
     if (chatFoto && usuario.foto_url) chatFoto.src = usuario.foto_url;
 
     cargarMensajes();
@@ -153,6 +150,14 @@ async function cargarMensajes() {
     }
 
     contenedor.scrollTop = contenedor.scrollHeight;
+
+    // Marcar como leídos los mensajes que este usuario recibió de la persona seleccionada
+    await supabaseClient
+        .from("mensajes")
+        .update({ leido: true })
+        .eq("emisor", usuarioSeleccionado.id)
+        .eq("receptor", usuarioActual.id)
+        .eq("leido", false);
 }
 
 const btnEnviar = document.getElementById("btnEnviar");
@@ -183,7 +188,8 @@ async function enviarMensaje() {
         .insert({
             emisor: usuarioActual.id,
             receptor: usuarioSeleccionado.id,
-            mensaje: texto
+            mensaje: texto,
+            leido: false
         });
 
     if (error) {

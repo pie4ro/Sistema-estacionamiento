@@ -200,6 +200,13 @@ async function cargarMensajesAdmin() {
     }
 
     contenedor.scrollTop = contenedor.scrollHeight;
+
+    await supabaseClient
+        .from("mensajes")
+        .update({ leido: true })
+        .eq("emisor", clienteSeleccionado.id)
+        .eq("receptor", adminActual.id)
+        .eq("leido", false);
 }
 
 async function enviarMensajeAdmin() {

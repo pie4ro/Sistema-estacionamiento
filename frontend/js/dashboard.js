@@ -1428,3 +1428,55 @@ async function cargarHistorialAdmin() {
   }
 }
 cargarHistorialAdmin();
+
+async function cargarContadorMensajesAdmin() {
+    const contenedorAdmin = document.getElementById("adminMensajesNoLeidos"); // Asegúrate de que tu tarjeta tenga este ID en el HTML
+    if (!contenedorAdmin) return;
+
+    const { data: userData, error: userError } = await supabaseClient.auth.getUser();
+    if (userError || !userData.user) return;
+
+    // Contar mensajes donde el receptor es el administrador y leido es false
+    const { count, error } = await supabaseClient
+        .from("mensajes")
+        .select("*", { count: "exact", head: true })
+        .eq("receptor", userData.user.id)
+        .eq("leido", false);
+
+    if (error) {
+        console.error("Error al contar mensajes del admin:", error.message);
+        contenedorAdmin.textContent = "0 sin leer";
+        return;
+    }
+
+    contenedorAdmin.textContent = `${count || 0} sin leer`;
+}
+
+// Ejecutar al cargar la página del administrador
+cargarContadorMensajesAdmin();
+
+async function cargarContadorMensajesCliente() {
+    const contenedorCliente = document.getElementById("mensajesSinLeer");
+    if (!contenedorCliente) return;
+
+    const { data: userData, error: userError } = await supabaseClient.auth.getUser();
+    if (userError || !userData.user) return;
+
+    // Contar los mensajes donde el receptor es el cliente actual y aún no están leídos
+    const { count, error } = await supabaseClient
+        .from("mensajes")
+        .select("*", { count: "exact", head: true })
+        .eq("receptor", userData.user.id)
+        .eq("leido", false);
+
+    if (error) {
+        console.error("Error al contar mensajes del cliente:", error.message);
+        contenedorCliente.textContent = "0 sin leer";
+        return;
+    }
+
+    contenedorCliente.textContent = `${count || 0} sin leer`;
+}
+
+// Ejecutar la función cuando abra el panel del cliente
+cargarContadorMensajesCliente();
