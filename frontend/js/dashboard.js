@@ -1480,3 +1480,11 @@ async function cargarContadorMensajesCliente() {
 
 // Ejecutar la función cuando abra el panel del cliente
 cargarContadorMensajesCliente();
+
+const btnIrRecover = document.getElementById("btnIrRecover");
+
+if (btnIrRecover) {
+  btnIrRecover.addEventListener("click", () => {
+    window.location.href = "../recover.html?from=profile";
+  });
+}

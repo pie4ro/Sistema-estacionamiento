@@ -25,3 +25,14 @@ if (recoverForm) {
     window.location.href = "index.html";
   });
 }
+
+const urlParams = new URLSearchParams(window.location.search);
+const desdePerfil = urlParams.get("from") === "profile";
+
+const btnVolver = document.getElementById("btnVolver");
+
+if (desdePerfil && btnVolver) {
+  btnVolver.textContent = "Volver al perfil";
+  // CORRECCIÓN AQUÍ: Entrar a la carpeta cliente para encontrar profile.html
+  btnVolver.href = "cliente/profile.html"; 
+}
